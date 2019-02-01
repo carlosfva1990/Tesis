@@ -1,0 +1,46 @@
+
+\section{Conclusiones}
+
+
+La precisión en el proceso de clasificado al usar AGC fue mayor en cilindros y planos, pero no hubo diferencias en la esfera. Al evaluar la exactitud los valores para el cilindro y el plano no presentaron cambios y en la esfera disminuyo cuando se usó AGC para clasificar los objetos. En conclusión, se recomienda el uso de RANSAC modificado con AGC para las geometrías cilíndricas, pero no se encontró mejoras para planos y no se recomienda para esferas. 
+
+
+En este trabajo se planteó el desarrollo de un sistema con la capacidad de representar objetos usando figuras geométricas usando AGC, a partir de un problema de clasificación.\\
+
+Se investigó y desarrolló un sistema que se comunica con el sensor Kinect y acomoda los datos obtenidos en una nube de puntos.\\
+
+Se investigaron las técnicas de visión por computadora de la transformada de Hough y redes neuronales como posibles clasificadores, cada uno con sus propias limitaciones dando lugar al algoritmo RANSAC como el método que más se ajusta a las necesidades del sistema.\\
+
+Se desarrollo un sistema que permite representar objetos reales según su geometría y presentarlos en un ambiente virtual usando RANSAC para obtener las geometrías.\\
+
+%segmentacion
+
+Se modificó el algoritmo RANSAC para usarlo con AGC el cual comparado con el algoritmo usando AE de la biblioteca PCL se obtuvieron los resultados desfavorables en la exactitud para la detección de esferas, y con precisión similar entre AE y AGC para las otras geometrías, pero con resultados favorables para la precisión con objetos planos y cilíndricos, y precisión similar para objetos esféricos.\\
+
+
+
+%De manera general se observó que el método propuesto usando AGC, obtiene resultados similares a los obtenidos usando AE. Contando con dos diferencias importantes. La primera que el método usando AE tiene mejor exactitud al momento de reconocer esferas, y la segunda es el incremento de la precisión del método usando AGC al detectar figuras cilindras.
+
+
+
+
+
+%uno a uno de los objetivos y como se cumplieron
+
+%destacar aporte
+
+\section{Trabajo a futuro}
+
+Como posibles trabajos a futuro se tiene:
+
+
+\begin{itemize}
+	\item Realización de una pruebas de rendimiento.
+	\item Paralelización del sistema, modificar la forma de trabajo para realizar la obtención de los modelos de forma paralela, cada que se obtienen nuevos datos del sensor generar un hilo para obtener resultados mas fluidos, así como la paralelización de operaciones en AGC,
+	\item Implementación de métodos RANSAC modificados como PROSAC (PROgressive SAmple Consensus), Preemptive RANSAC o R-RANSAC, cada método mejora cierto aspecto del algoritmo, mejores estimaciones, más rápidos, etc. 
+	\item Modificar el sistema para usar una combinación de los dos métodos y aprovechar las mejores características de cada uno, así beneficiarse de los tiempos obtenidos en modelos AE y la precisión obtenida para AGC.
+	\item Mejorar el modelo obtenido aplicando el método de mínimos cuadrados.
+	\item Desarrollo de modelos que describan mas geometrías (prismas, pirámides, etc.).
+	
+\end{itemize}
+

@@ -1,0 +1,20 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
+The style file: IEEEtran.bst
+Database file #1: bibliografia.bib
+I was expecting a `,' or a `}'---line 157 of file bibliografia.bib
+ :  
+ :  month = {},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Too many commas in name 1 of "Garza Burgos, M.; Sanchez O., E.; Bayro Corrochano, E." for entry MedicalVisionAGC
+while executing---line 2403 of file IEEEtran.bst
+Too many commas in name 1 of "Jungong, Han; Ling, Shao; Dong, Xu; Jaime, Shotton" for entry CompVisionKinect
+while executing---line 2403 of file IEEEtran.bst
+Too many commas in name 1 of "Jungong, Han; Ling, Shao; Dong, Xu; Jaime, Shotton" for entry CompVisionKinect
+while executing---line 2403 of file IEEEtran.bst
+
+Done.
+(There were 4 error messages)

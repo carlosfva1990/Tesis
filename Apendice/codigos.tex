@@ -1,0 +1,1775 @@
+
+\section{Códigos}
+%
+%\subsection{Código de la tarjeta de desarrollo}
+En esta sección se muestran los códigos de los archivos desarrollados y modificados para desarrollar el proyecto. Hay que tener en cuenta que para usar estos códigos es necesario tener instaladas las bibliotecas y programas siguientes:
+\begin{itemize}
+	\item PCL 1.8.1 \cite{Rusu_ICRA2011_PCL}
+	\item libfreenect2 \cite{libfreenect}
+	\item libfreenect2pclgrabber \cite{k2g}
+	\item Versor \cite{versor}
+\end{itemize}
+
+{\fontsize{7.5}{10} \selectfont
+	\label{code:Main}
+	\begin{lstlisting}[caption={Archivo test.cpp}]
+/*
+Copyright 2018, Carlos Villasenor
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+@Author
+Carlos Villasenor,  Student
+CIDETEC -IPN, CD. MX. Mexico
+*/
+#include "k2g.h"
+#include <pcl/visualization/cloud_viewer.h>
+#include <chrono>
+#include <pcl/segmentation/segment_differences.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/console/print.h>
+#include <pcl/console/parse.h>
+#include <pcl/console/time.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/kdtree/kdtree.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/sample_consensus/sac_model_sphere.h>
+#include <pcl/sample_consensus/sac_model_cylinder.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/filters/extract_indices.h>
+#include <type_traits>
+#include "detail/vsr_multivector.h"
+#include "ransac.h"
+#include <iostream>
+#include <fstream>
+#include <time.h>
+
+using namespace std;
+typedef pcl::PointXYZRGB PointType;
+typedef pcl::Normal PointNType;
+
+double tress = 0.001;
+double down = 0.025;
+bool _downSample = true;
+bool _resta = true;
+bool _cluster = false;
+bool _ciclo = true;
+bool _ciclo2 = false;
+bool _useAgc = true;
+bool _debug = true;
+
+boost::shared_ptr<pcl::PointCloud<PointType>> cloudKinect;
+pcl::PointCloud<PointType>::Ptr cloudAux(new pcl::PointCloud<PointType>);
+pcl::PointCloud<PointType>::Ptr cloudAux2(new pcl::PointCloud<PointType>);
+pcl::PointCloud<PointType>::Ptr cloudCopy(new pcl::PointCloud<PointType>);
+pcl::PointCloud<PointType>::Ptr cloudOut(new pcl::PointCloud<PointType>);
+// Creating the KdTree object for the search method of the extraction
+pcl::search::KdTree<PointType>::Ptr tree(new pcl::search::KdTree<PointType>);
+
+
+struct PlySaver {
+
+
+PlySaver(boost::shared_ptr<pcl::PointCloud<PointType>> cloud, bool binary, bool use_camera, K2G & k2g) :
+cloud_(cloud), binary_(binary), use_camera_(use_camera), k2g_(k2g) {}
+
+boost::shared_ptr<pcl::PointCloud<PointType>> cloud_;
+bool binary_;
+bool use_camera_;
+K2G & k2g_;
+
+};
+
+//entrada por teclado
+void KeyboardEventOccurred(const pcl::visualization::KeyboardEvent &event, void * data)
+{
+
+std::string pressed = event.getKeySym();//lee los datos de la interrupcion      
+PlySaver * s = (PlySaver*)data;//para cuardar la nube de puntos
+if (event.keyDown())
+{
+if (pressed == "a")
+{
+if (_useAgc)
+_useAgc = false;
+else
+_useAgc = true;
+std::cout << "use Agc " << _useAgc << std::endl;
+}
+if (pressed == "p")
+{
+//se guarda una imagen inicial en cloud2 para luego compararla
+pcl::copyPointCloud(*cloudAux2, *cloudCopy);
+tree->setInputCloud(cloudOut);
+_cluster = true;
+//_downSample = false;
+std::cout << "cpiado" << std::endl;
+}
+if (pressed == "s")
+{
+
+pcl::PLYWriter writer;
+std::chrono::high_resolution_clock::time_point p = std::chrono::high_resolution_clock::now();
+std::string now = std::to_string((long)std::chrono::duration_cast<std::chrono::milliseconds>(
+			p.time_since_epoch()).count());
+writer.write("cloud_" + now, *(s->cloud_), s->binary_, s->use_camera_);
+
+std::cout << "saved " << "cloud_" + now + ".ply" << std::endl;
+}
+if (pressed == "o")
+{
+//sirbe para debugear y ver que ocurre en cada ciclo
+//hay que descomentar una linea en main que hace _ciclo = false
+if (_ciclo)
+_ciclo = false;
+else
+_ciclo = true;
+
+std::cout << "ciclo" << std::endl;
+}
+if (pressed == "l")
+{
+//sirbe para debugear y ver que ocurre en cada ciclo
+//hay que descomentar una linea en main que hace _ciclo = false
+_ciclo = true;
+_ciclo2 = true;
+
+std::cout << "ciclo" << std::endl;
+}
+if (pressed == "u")
+{
+if (_resta)
+_resta = false;
+else
+_resta = true;
+std::cout << "resta " << _resta << std::endl;
+}
+if (pressed == "j")
+{
+tress = tress + 0.001;
+std::cout << "tres " << tress << std::endl;
+}
+if (pressed == "m")
+{
+tress = tress - 0.001;
+std::cout << "tres " << tress << std::endl;
+}
+if (pressed == "y")
+{
+if (_downSample)
+_downSample = false;
+else
+_downSample = true;
+std::cout << "downSample " << _downSample << std::endl;
+}
+if (pressed == "h")
+{
+down = down + 0.001;
+std::cout << "down " << down << std::endl;
+}
+if (pressed == "n")
+{
+down = down - 0.001;
+std::cout << "down " << down << std::endl;
+}
+if (pressed == "x")
+{
+s->k2g_.storeParameters();
+std::cout << "stored calibration parameters" << std::endl;
+}
+}
+}
+
+
+
+int main(int argc, char * argv[])
+{
+
+//se define e inicia la captura de datos de kinect usando freenect y k2g
+Processor freenectprocessor =OPENGL;//si no tienes CUDA instalado prueba con CPU, OPENCL o OPENGL
+std::vector<int> ply_file_indices;
+K2G k2g(freenectprocessor);
+k2g.disableLog();
+
+k2g.printParameters();
+std::cout << "getting cloud" << std::endl;
+cloudKinect = k2g.getCloudMed();
+
+//se crea una ventana y se vincula con el objeto viewer 
+boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(
+								new pcl::visualization::PCLVisualizer("Data Kinect"));
+
+//se divide la ventana en 2 para mostrar la entrada y la salida
+//para el lado izq
+int v1(0);
+viewer->setPosition(350, 50);
+viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 300);
+viewer->createViewPort(0.0, 0.0, 0.5, 1.0, v1);
+viewer->setBackgroundColor(0, 0, 0, v1);
+viewer->addPointCloud<PointType>(cloudAux, "sample cloud", v1);
+viewer->setPointCloudRenderingProperties(
+							pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "sample cloud");
+
+//para el lado der
+int v2(0);
+viewer->createViewPort(0.5, 0.0, 1.0, 1.0, v2);
+viewer->setBackgroundColor(0.1, 0.1, 0.1, v2);
+viewer->addText("Filtered data", 10, 10, "v2 text", v2);
+viewer->addPointCloud<PointType>(cloudOut, "sample cloud2", v2);
+viewer->setPointCloudRenderingProperties(
+							pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 8, "sample cloud2");
+
+//se agrega un evento para el teclado para poder guardar la nuve
+PlySaver ps(cloudAux2, false, false, k2g);
+viewer->registerKeyboardCallback(KeyboardEventOccurred, (void*)&ps);
+
+//se acomoda la camara para ver los datos
+viewer->setCameraPosition(1, 0, -4, 0, -1, 0, 0);
+
+
+std::ofstream out;
+
+// std::ios::app is the open mode "append" meaning
+// new data will be written to the end of the file.
+out.open("myfile.txt", std::ios::app);
+
+stringstream myString;
+myString << std::endl <<
+	 "getData\t downsample\t resta\t clusteer\t esfera\t plano\t cilindro\t" <<
+	 " veredicto\t probabilidad\t Render\t metodo\t tiempototal" 
+	 << std::endl;
+out << myString.str();
+
+out.close();
+
+//inicia el ciclo con los datos ya iniciados
+while (!viewer->wasStopped()) {
+
+
+out.open("myfile.txt", std::ios::app);
+
+clock_t timeStart = clock();
+clock_t timeLoop = clock();
+
+//se envian los datos de los nuvos puntos y se muestran en la ventana
+viewer->updatePointCloud(cloudOut, "sample cloud2");
+viewer->updatePointCloud(cloudAux, "sample cloud");
+
+//permite la visualizacion de los datos 
+viewer->spinOnce(100, true);
+
+//pausa la ejecucion
+if (_ciclo)
+{
+//se obtienen los datos del kinect
+k2g.updateCloudMed(cloudKinect);
+
+//se copian a una nube auxiliar
+copyPointCloud(*cloudKinect, *cloudAux);
+
+//se limpian las figuras del visor
+viewer->removeAllShapes();
+//se re-agrega el menu
+viewer->addText("Kinect data input", 10, 10, "v1 text", v1);
+viewer->addText("a: change between AGC an vector metods", 10, 180, "v1 text12", v1);
+viewer->addText("p: copy to filter", 10, 180, "v1 text3", v1);
+viewer->addText("s: save cloud to ply", 10, 170, "v1 text2", v1);
+viewer->addText("o: pausa la ejecucion del programa", 10, 160, "v1 text10", v1);
+viewer->addText("l: ejecuta un ciclo del programa y se pausa", 10, 150, "v1 text11", v1);
+viewer->addText("u: on/off filter", 10, 140, "v1 text4", v1);
+viewer->addText("j: increase threshold filter", 10, 130, "v1 text5", v1);
+viewer->addText("m: reduce  threshold filter", 10, 120, "v1 text6", v1);
+viewer->addText("y: on/off douwn sample", 10, 110, "v1 text7", v1);
+viewer->addText("h: increase threshold douwn sample", 10, 100, "v1 text8", v1);
+viewer->addText("n: reduce  threshold douwn sample", 10, 90, "v1 text9", v1);
+
+if (_debug) {
+std::cout << "tiempo de actualizacion de los puntos:  " <<
+							 (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+//se realiza una disminucion de puntos
+if (_downSample)
+{
+//vg es el objeto que realiza la disminucion
+pcl::VoxelGrid<PointType> vg;
+vg.setInputCloud(cloudAux);
+vg.setLeafSize(down, down, down);
+vg.filter(*cloudAux2);//el resultado se guarda en cloudAux2
+
+}
+else
+{
+copyPointCloud(*cloudAux, *cloudAux2);//el resultado se guarda en cloudAux2
+}
+
+if (_debug) {
+std::cout << "tiempo disminucion de puntos:  " << 
+					(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+// para realizar la dferencia entre 2 nuves de puntos
+//para eliminar los puntos que no se usan 
+if (_resta)
+{
+//la resta se realiza cloudAux-cloudCopy con una toleracia tress
+pcl::SegmentDifferences<PointType> resta;
+resta.setInputCloud(cloudAux2);
+resta.setTargetCloud(cloudCopy);
+resta.setDistanceThreshold(tress);
+resta.segment(*cloudOut);//la resta se guarda en cloudOut
+}
+else
+{
+copyPointCloud(*cloudAux2, *cloudOut);
+}
+
+if (_debug) {
+std::cout << "tiempo de resta de las nubes:  " <<
+					 (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+//clusterizacion de objetos usando la distancia euclidiana
+if (_cluster && _resta)
+{
+pcl::EuclideanClusterExtraction<PointType> ec;
+//la toleracia para el cluster es poco mas grande que la de la reduccion
+ec.setClusterTolerance(down + 0.01);  
+ec.setMinClusterSize(20);
+ec.setMaxClusterSize(25000);
+ec.setSearchMethod(tree);
+ec.setInputCloud(cloudOut);
+
+//se obtienen los diferentes objetos en diferentes nuves de puntos
+int j = 0;//contador de clusters
+//arreglo que contiene los incices de puntos de cada cluster
+std::vector<pcl::PointIndices> cluster_indices;
+ec.extract(cluster_indices);
+
+//para cada nube de puntos(objetos) encontrada:
+for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(); it != cluster_indices.end(); ++it)
+{
+//nube de puntos (cluster)
+pcl::PointCloud<PointType>::Ptr cloud_cluster(new pcl::PointCloud<PointType>);
+// pcl::PointCloud<PointType>::Ptr cloud_cluster2(new pcl::PointCloud<PointType>);
+//normales calculadas de la nube de puntos
+pcl::PointCloud<PointNType>::Ptr cloud_normals(new pcl::PointCloud<PointNType>);
+
+//copia cada punto descrito por los inices
+for (std::vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit)
+cloud_cluster->points.push_back(cloudOut->points[*pit]);
+
+cloud_cluster->width = cloud_cluster->points.size();
+cloud_cluster->height = 1;
+cloud_cluster->is_dense = true;
+
+//se calcula el mejor modelo para cada cluster
+if (cloud_cluster->width > 20) //el cluster deve tener almenos 20 puntos
+{
+
+double probSphere = 0;
+double probPlane = 0;
+double probCylinder = 0;
+
+bool _sphere = false;
+bool _plane = false;
+bool _cylinder = false;
+
+std::vector<int> inliers;//indice de pintos que pertenecen a la figura
+
+
+if (_debug) {
+std::cout << "tiempo de cluster:  " << (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+//usando el metodo tradicional
+if (!_useAgc)
+{
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////modelo de la esfera ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+pcl::SampleConsensusModelSphere<PointType>::Ptr model_s(
+									new pcl::SampleConsensusModelSphere<PointType>(cloud_cluster));
+model_s->setRadiusLimits(0.05, 0.5);
+pcl::RandomSampleConsensus<PointType> ransacS(model_s);
+// se calcula RANSAC para la esfera
+ransacS.setDistanceThreshold(.01);//tolerancia de error en la figura
+ransacS.computeModel();
+ransacS.getInliers(inliers);
+probSphere = (double)inliers.size() / cloud_cluster->width;
+
+if (_debug) {
+std::cout << "tiempo para estimar la esfera:  " << 
+						(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////modelo del plano /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+pcl::SampleConsensusModelPlane<PointType>::Ptr model_p(
+						new pcl::SampleConsensusModelPlane<PointType>(cloud_cluster));
+pcl::RandomSampleConsensus<PointType> ransacP(model_p);
+// se calcula RANSAC para el plano 
+ransacP.setDistanceThreshold(.01);//tolerancia de error en la figura
+ransacP.computeModel();
+ransacP.getInliers(inliers);
+probPlane = (double)inliers.size() / cloud_cluster->width;
+
+if (_debug) {
+std::cout << "tiempo para estimar el plano:  " << 
+								(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// cilindro /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//calculo de normales
+pcl::NormalEstimation<PointType, PointNType > ne;
+ne.setSearchMethod(tree);
+ne.setInputCloud(cloud_cluster);
+ne.setKSearch(50);
+ne.compute(*cloud_normals);
+//modelo del cilindro
+pcl::SampleConsensusModelCylinder<PointType, PointNType >::Ptr model_c(
+					new pcl::SampleConsensusModelCylinder<PointType, PointNType >(cloud_cluster));
+model_c->setInputNormals(cloud_normals);
+model_c->setInputCloud(cloud_cluster);
+model_c->setRadiusLimits(0.02, 0.8);
+pcl::RandomSampleConsensus<PointType> ransacC(model_c);
+// se calcula RANSAC para el cilindro 
+ransacC.setDistanceThreshold(.01);//tolerancia de error en la figura
+ransacC.computeModel();
+ransacC.getInliers(inliers);
+probCylinder = (double)inliers.size() / cloud_cluster->width;
+
+
+if (_debug) {
+std::cout << "tiempo para estimar el cilindo:  " <<
+								 (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+/*
+//se muestran las probabilidades para cada objeto
+std::cout << "sphere prob " << probSphere << std::endl;
+std::cout << "plane prob " << probPlane << std::endl;
+std::cout << "cylinder prob " << probCylinder << std::endl;
+*/
+//se elige la mejor probabilidad
+if (probSphere > probCylinder && probSphere > probPlane)
+{
+stringstream myString;
+myString << "sphere, \t" << probSphere <<"\t";
+out << myString.str();
+_sphere = true;
+}
+if (probCylinder > probPlane && probCylinder >= probSphere)
+{
+stringstream myString;
+myString << "cylinder, \t" << probCylinder <<"\t";
+out << myString.str();
+_cylinder = true;
+}
+if (probPlane >= probCylinder && probPlane >= probSphere)
+{
+stringstream myString;
+myString << "plane,  \t" << probPlane << "\t";
+out << myString.str();
+_plane = true;
+}
+
+if (_sphere)
+{
+//ransacS.getInliers(inliers);
+
+//se obtienen los datos de la figura y se convirten en un tipo de dato para graficar
+Eigen::VectorXf coefficients;
+ransacS.getModelCoefficients(coefficients);
+pcl::PointXYZ center;
+center.x = coefficients[0];
+center.y = coefficients[1];
+center.z = coefficients[2];
+
+//se crea una esfera que correspunde al modelo calculado y se muestra
+viewer->addSphere(center, coefficients[3], 0.5, 0.0, 0.0, "sphere" + std::to_string(j), 0);
+std::cout << "sphere" + std::to_string(j) << std::endl;
+_sphere = false;
+}
+
+if (_plane)
+{
+
+//ransacP.getInliers(inliers);//calcula los puntos de la fugura
+//se obtienen los datos de la figura y se convirten en un tipo de dato para graficar
+pcl::ModelCoefficients coefficientsM;
+Eigen::VectorXf coefficients;
+coefficientsM.values.resize(4);
+ransacP.getModelCoefficients(coefficients);
+coefficientsM.values[0] = coefficients[0];//x
+coefficientsM.values[1] = coefficients[1];//y
+coefficientsM.values[2] = coefficients[2];//z
+coefficientsM.values[3] = coefficients[3];//w//d Hessian component
+//se crea un plano que correspunde al modelo calculado y se muestra
+viewer->addPlane(coefficientsM, "plane" + std::to_string(j), 0);
+
+std::cout << "plane" + std::to_string(j) << std::endl;
+_plane = false;
+}
+
+if (_cylinder)
+{
+//ransacC.getInliers(inliers);
+//se obtienen los datos de la figura y se convirten en un tipo de dato para graficar
+pcl::ModelCoefficients coefficientsM;
+Eigen::VectorXf coefficients;
+coefficientsM.values.resize(7);
+ransacC.getModelCoefficients(coefficients);
+pcl::PointXYZ center;
+coefficientsM.values[0] = coefficients[0];// centro x
+coefficientsM.values[1] = coefficients[1];// centro y
+coefficientsM.values[2] = coefficients[2];// centro z
+coefficientsM.values[3] = coefficients[3];// direccion del eje x
+coefficientsM.values[4] = coefficients[4];// direccion del eje y 
+coefficientsM.values[5] = coefficients[5];// direccion del eje z
+coefficientsM.values[6] = coefficients[6];// radio
+viewer->addCylinder(coefficientsM, "cylinder" + std::to_string(j), 0);
+std::cout << "cylinder" + std::to_string(j) << std::endl;
+_cylinder = false;
+}
+
+if (_debug) {
+
+std::cout << "tiempo de renderizacion :  " << 
+						(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t" << _useAgc;
+out << myString.str();
+
+timeStart = clock();
+}
+}
+//usando algebra geometrica
+else
+{
+
+if (_debug) {
+//timeStart = clock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////modelo de la esfera ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//se calcula ransac para la esfera en agc
+ransacSphere sph;
+sph.setData(cloud_cluster, 00.001); 
+sph.compute();
+inliers = *sph.indexlist;
+probSphere = (double)inliers.size() / cloud_cluster->width;
+
+if (_debug) {
+std::cout << "tiempo para estimar la esfera:  " << 
+									(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////modelo del plano /////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//se calcula ransac para el plano en agc
+ransacPlane pln;
+pln.setData(cloud_cluster, 0.01, 1);
+pln.compute();
+inliers = *pln.indexlist;
+probPlane = (double)inliers.size() / cloud_cluster->width;
+
+if (_debug) {
+std::cout << "tiempo para estimar el plano:  " 
+									<< (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// cilindro /////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//se calcula ransac para el cilindro en agc
+ransacCylinder2 cyl;
+cyl.setData(cloud_cluster, 0.02);
+cyl.compute();
+inliers = *cyl.indexlist;
+probCylinder = (double)inliers.size() / cloud_cluster->width;
+
+if (_debug) {
+std::cout << "tiempo para estimar el cilindro:  " << 
+										(double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t";
+out << myString.str();
+
+timeStart = clock();
+}
+
+
+//se muestran las probabilidades para cada objeto
+std::cout << "sphere prob \t" << probSphere << std::endl;
+std::cout << "plane prob \t" << probPlane << std::endl;
+std::cout << "cylinder prob \t" << probCylinder << std::endl;
+
+//se elige la mejor probabilidad
+if (probSphere > probCylinder && probSphere > probPlane)
+{
+stringstream myString;
+myString << "sphere\t" << probSphere <<"\t";
+out << myString.str();
+_sphere = true;
+}
+if (probCylinder > probPlane && probCylinder >= probSphere)
+{
+stringstream myString;
+myString << "cylinder\t" << probCylinder << "\t";
+out << myString.str();
+_cylinder = true;
+}
+if (probPlane >= probCylinder && probPlane >= probSphere)
+{
+stringstream myString;
+myString << "plane\t" << probPlane << "\t";
+out << myString.str();
+_plane = true;
+}
+
+if (_sphere) {
+//inliers = *sph.indexlist;
+pcl::PointXYZ center;
+center.x = sph.ranSph[0];
+center.y = sph.ranSph[1];
+center.z = sph.ranSph[2];
+//se crea una esfera que correspunde al modelo calculado y se muestra
+viewer->addSphere(center, sph.rad, 0.5, 0.0, 0.0, "sphere" + std::to_string(j), 0);
+
+std::cout << "sphere" + std::to_string(j) << std::endl;
+_sphere = false;
+
+}
+
+if (_plane)
+{
+//inliers = *pln.indexlist;
+pcl::PointXYZ center;
+pcl::ModelCoefficients coefficientsM;
+coefficientsM.values.resize(4);
+coefficientsM.values[0] = pln.ranPln[0];//x normal
+coefficientsM.values[1] = pln.ranPln[1];//y normal
+coefficientsM.values[2] = pln.ranPln[2];//z normal
+coefficientsM.values[3] = -1 * pln.ranPln[4];//d Hessian component
+
+//se crea una esfera que correspunde al modelo calculado y se muestra
+viewer->addPlane(coefficientsM, "plane" + std::to_string(j), 0);
+
+std::cout << "plane" + std::to_string(j) << std::endl;
+_plane = false;
+}
+
+if (_cylinder)
+
+{
+//inliers = *cyl.indexlist;
+//se obtienen los datos de la figura y se convirten en un tipo de dato para graficar
+pcl::ModelCoefficients coefficientsM;
+Eigen::VectorXf coefficients;
+coefficientsM.values.resize(7);
+pcl::PointXYZ center;
+coefficientsM.values[0] = cyl.ranCyl.center[0];// centro x
+coefficientsM.values[1] = cyl.ranCyl.center[1];// centro y
+coefficientsM.values[2] = cyl.ranCyl.center[2];// centro z
+coefficientsM.values[3] = cyl.ranCyl.plan[0]*2;// direccion del eje x
+coefficientsM.values[4] = cyl.ranCyl.plan[1]*2;// direccion del eje y 
+coefficientsM.values[5] = cyl.ranCyl.plan[2]*2;// direccion del eje z
+coefficientsM.values[6] = cyl.ranCyl.radius;// radio
+viewer->addCylinder(coefficientsM, "cylinder" + std::to_string(j), 0);
+
+pcl::PointXYZ center1;
+center1.x = cyl.ranCyl.s1.x;
+center1.y = cyl.ranCyl.s1.y;
+center1.z = cyl.ranCyl.s1.z;
+//se crea una esfera que correspunde al modelo calculado y se muestra
+viewer->addSphere(center1, cyl.ranCyl.s1.radius, 0.5, 0.0, 0.0, "sphere1" + std::to_string(j), 0);
+
+pcl::PointXYZ center2;
+center2.x = cyl.ranCyl.s2.x;
+center2.y = cyl.ranCyl.s2.y;
+center2.z = cyl.ranCyl.s2.z;
+//se crea una esfera que correspunde al modelo calculado y se muestra
+viewer->addSphere(center2, cyl.ranCyl.s2.radius, 0.5, 0.0, 0.0, "sphere2" + std::to_string(j), 0);
+
+std::cout << "cylinder" + std::to_string(j) << std::endl;
+_cylinder = false;
+}
+
+//se copian solo los puntos de la figura(esfera, plano o cilindro) a otra nube de puntos
+// pcl::copyPointCloud<PointType>(*cloud_cluster, inliers, *cloud_cluster2);
+//se agreega la nube resultante a la ventana para la visualizasion
+// viewer2->addPointCloud<PointType>(cloud_cluster2, "cloud" + std::to_string(j));
+//se suma uno al contador de cluster
+j++;
+//  std::cout << "cluster" + std::to_string(j) << std::endl;
+
+if (_debug) {
+
+std::cout << "tiempo de renderizacion :  " <<
+									 (double)(clock() - timeStart) / CLOCKS_PER_SEC << std::endl;
+
+stringstream myString;
+myString << (double)(clock() - timeStart) / CLOCKS_PER_SEC << "\t"<< _useAgc;
+out << myString.str();
+
+timeStart = clock();
+}
+
+}
+}
+}
+}
+else {
+
+
+stringstream myString;
+myString << ", \t, \t, \t, \t, \t, \t, \t"  ;
+out << myString.str();
+}
+stringstream myString;
+myString << ", \t" << (double)(clock() - timeLoop) / CLOCKS_PER_SEC << std::endl;
+out << myString.str();
+
+//si se usa la tecla de ciclo unico
+if (_ciclo2)
+_ciclo = false;
+
+out.close();
+}
+}
+
+k2g.shutDown();
+return 0;
+}
+	\end{lstlisting}
+}$ $ \\
+
+
+{\fontsize{7.5}{10} \selectfont
+	\label{code:ransac}
+	\begin{lstlisting}[caption={Archivo ransac.h}]
+	//
+	// Created by Aksel Sveier. Spring 2016
+	//
+	
+	#ifndef RANSACGA_RANSAC_H
+	#define RANSACGA_RANSAC_H
+	
+	#endif //RANSACGA_RANSAC_H
+	
+	#include <space/vsr_cga3D_op.h>
+	#include <pcl/point_types.h>
+	#include <pcl/common/common_headers.h>
+	#include <pcl/filters/passthrough.h>
+	#include <pcl/octree/octree.h>
+	#include <pcl/octree/octree_impl.h>
+	#include <pcl/filters/extract_indices.h>
+	
+	#include <cmath>        // std::abs
+	#include "objects.h"
+	
+	
+	using namespace vsr;
+	using namespace vsr::cga;
+	using namespace pcl;
+	
+	//classes that performs ransac operations depending on the object(line, plane, sphere)
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	///////////////////////      SPHERE    ////////////////////////////////////////////////////
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	//Class for detecting a sphere in a point cloud with ransac
+	class ransacSphere{
+	public:
+	//Class constructor
+	ransacSphere() {
+	indexlist = new std::vector<int>;
+	}
+	
+	float rad=0;
+	float radiusTolerance=0.001;
+	//For the kinect the accuracy is 1 % of the distance from the sensor for 100 images.
+	float inlierTreshold = 0.005; 
+	float maxRadius = 1;
+	int candidates = 1; //Number of candidates to detect
+	int iterations = 1000; //Maximum allowed iterations
+	int actualIt; //Integer for storing the number of iterations performed
+	int numInliers; //Integer for storing the number of inliers
+	std::vector<int> *indexlist; //Vector for storing inliers
+	PointCloud<PointXYZRGB>::Ptr cloud; //Point cloud for storing the data set
+	DualSphere ranSph; //Sphere object
+	sphere asphere; //Create a sphere object from object.h
+	
+	sphere sph1;//para el calculo del cilindro
+	float distS1S2 = 0; //distancia entre los centros de s1 y s2
+	Pnt s1;
+	
+	
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tol) {
+	cloud = cl;
+	//radius = rad;
+	inlierTreshold = tol;
+	candidates = 1;
+	}
+	
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tol, int iter) {
+	cloud = cl;
+	iterations = iter;
+	inlierTreshold = tol;
+	candidates = 1;
+	}
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tol, int iter, sphere sp, float dist) {
+	cloud = cl;
+	iterations = iter;
+	inlierTreshold = tol;
+	candidates = 1;
+	sph1 = sp;
+	s1 = Vec(sph1.x, sph1.y, sph1.z).null();
+	distS1S2 = dist;
+	
+	}
+	/*
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tol, int cand) {
+	cloud = cl;
+	//radius = rad;
+	inlierTreshold = tol;
+	candidates = cand;
+	}
+	*/
+	//Runs the primitive shape detection for a sphere
+	bool compute() {
+	//Variables to keep track of the algorithm
+	int it = 0;
+	vector<int> ran(4);
+	int can = 0;
+	vector<sphere> cand(candidates);
+	int count;
+	vector<int> inPoints(candidates);
+	
+	//Timer
+	std::clock_t t1, t2;
+	t1 = std::clock();
+	
+	
+	///vars for probability stop
+	double k = 3.0;
+	double probability_ = 0.99;//prob. to get a selection without error
+	double log_probability = log(1.0 - probability_);
+	double one_over_indices = 1.0 / static_cast<double> (cloud->width);
+	
+	
+	inPoints[0] = 0;
+	
+	//Algorithm
+	//while (it < iterations) {//can < candidates &&  it < iterations) {
+	while (it < k && it < iterations) {
+	
+	//Generate random indexes
+	for (int i = 0; i<4; i++) {
+	ran[i] = rand() % cloud->points.size();
+	}
+	
+	//Creates a dual sphere in confromal space from 4 indexed points in a point cloud
+	asphere.defineDual(cloud, ran);
+	
+	//Check if sphere is inside tolerance
+	if (sphereCheck(asphere)) {
+	
+	//Count inliers
+	count = 0;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), asphere)) {
+	count++;
+	}
+	}
+	/*
+	if (inPoints[0] == NULL) {
+	inPoints[0] = count;
+	cand[0] = asphere;
+	}
+	*/
+	if (count > inPoints[0]) {
+	cand[0] = asphere;
+	inPoints[0] = count;
+	can++;
+	
+	// Compute the k parameter (k=log(z)/log(1-w^n))
+	double w = static_cast<double> (inPoints[0]) * one_over_indices;
+	double p_no_outliers = 1.0 - pow(w, (ran.size()));// 4 puntos para crear la esfera
+	 // Avoid division by -Inf
+	p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon(), p_no_outliers);      
+	// Avoid division by 0.
+	p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon(), p_no_outliers);   
+	k = log_probability / log(p_no_outliers);
+	
+	
+	}
+	}
+	it++;
+	
+	
+	
+	}
+	
+	if (can > 0) {
+	//Find candidate with most inliers
+	int best = 0;
+	numInliers = 0;
+	for (int i = 0; i < cand.size(); i++) {
+	if (inPoints[i] > numInliers) {
+	best = i;
+	numInliers = inPoints[i];
+	}
+	}
+	
+	//cand[best].radius = sqrt(-2 * cand[best].dualSphere[4]);
+	asphere = cand[best];
+	ranSph = cand[best].dualSphere;
+	rad = cand[best].calcRadius(cand[best].dualSphere);
+	
+	
+	delete indexlist;
+	indexlist = new std::vector<int>;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), asphere)) {
+	indexlist->push_back(j);
+	}
+	}
+	
+	
+	
+	//Check if the fit is succesfull, return the unfitted sphere.
+	/*if (cand[best].radius / rad > 1.1 || cand[best].radius / rad < 0.9) {
+	ranSph = cand[best].dualSphere;
+	}*/
+	//Return true if a sphere was found
+	return true;
+	}
+	else {
+	//Return false if not
+	return false;
+	}
+	}
+	
+	//Runs the primitive shape detection for a sphere2 of the cylinder
+	bool computeS2() {
+	//Variables to keep track of the algorithm
+	int it = 0;
+	vector<int> ran(4);
+	int can = 0;
+	vector<sphere> cand(candidates);
+	int count;
+	vector<int> inPoints(candidates);
+	Pnt s2;
+	
+	//Timer
+	std::clock_t t1, t2;
+	t1 = std::clock();
+	
+	
+	///vars for probability stop
+	double k = 3.0;
+	double probability_ = 0.99;//prob. to get a selection without error
+	double log_probability = log(1.0 - probability_);
+	double one_over_indices = 1.0 / static_cast<double> (cloud->width);
+	
+	
+	inPoints[0] = 0;
+	
+	//Algorithm
+	//while (it < iterations) {//can < candidates &&  it < iterations) {
+	while (it < k && it < iterations) {
+	
+	//Generate random indexes
+	for (int i = 0; i<4; i++) {
+	ran[i] = rand() % cloud->points.size();
+	}
+	
+	//Creates a dual sphere in confromal space from 4 indexed points in a point cloud
+	asphere.defineDual(cloud, ran); 
+	
+	s2 = Vec(asphere.x, asphere.y, asphere.z).null();
+	
+	Sca d = Sca(-2)*(s1 <= s2);
+	
+	//Check if sphere is inside tolerance
+	if (sphereCheck(asphere) && distS1S2 < sqrt ( abs ( d[0] ) ) ) {
+	
+	//Count inliers
+	count = 0;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), asphere)) {
+	count++;
+	}
+	}
+	/*
+	if (inPoints[0] == NULL) {
+	inPoints[0] = count;
+	cand[0] = asphere;
+	}
+	*/
+	if (count > inPoints[0]) {
+	cand[can] = asphere;
+	inPoints[can] = count;
+	can++;
+	
+	// Compute the k parameter (k=log(z)/log(1-w^n))
+	double w = static_cast<double> (inPoints[0]) * one_over_indices;
+	double p_no_outliers = 1.0 - pow(w, (ran.size()));// 4 puntos para crear la esfera
+	// Avoid division by -Inf
+	p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon(), p_no_outliers);       
+	// Avoid division by 0.
+	p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon(), p_no_outliers);   
+	k = log_probability / log(p_no_outliers);
+	
+	
+	}
+	}
+	it++;
+	
+	
+	
+	}
+	
+	if (can > 0) {
+	//Find candidate with most inliers
+	int best = 0;
+	numInliers = 0;
+	for (int i = 0; i < cand.size(); i++) {
+	if (inPoints[i] > numInliers) {
+	best = i;
+	numInliers = inPoints[i];
+	}
+	}
+	
+	//cand[best].radius = sqrt(-2 * cand[best].dualSphere[4]);
+	asphere = cand[best];
+	ranSph = cand[best].dualSphere;
+	rad = cand[best].calcRadius(cand[best].dualSphere);
+	
+	
+	delete indexlist;
+	indexlist = new std::vector<int>;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), asphere)) {
+	indexlist->push_back(j);
+	}
+	}
+	
+	
+	
+	//Check if the fit is succesfull, return the unfitted sphere.
+	/*if (cand[best].radius / rad > 1.1 || cand[best].radius / rad < 0.9) {
+	ranSph = cand[best].dualSphere;
+	}*/
+	//Return true if a sphere was found
+	return true;
+	}
+	else {
+	//Return false if not
+	return false;
+	}
+	}
+	
+	
+	private:
+	
+	//Function to check if a point is classified as a inlier
+	bool isInlier(Pnt point, sphere can) {
+	Sca dist = Sca(2)*(point <= can.dualSphere) ; // 2 (P . S*)
+	if ((abs(dist[0]) < inlierTreshold) && (abs(dist[0]) > -1* inlierTreshold)) {
+	return true;
+	}
+	else {
+	return false;
+	}
+	}
+	
+	//Check if the radius is inside the tolerance limits
+	bool sphereCheck(sphere sph) {
+	if (sph.radius < maxRadius)
+	{
+	return true;
+	}
+	else {
+	return false;
+	}
+	}
+	};
+	
+	//////////////////////////////////////////////////////////////////////////////
+	
+	///////////////////////      PLANE     ///////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////////
+	
+	//Class for detecting a plane in a point cloud with RANSAC
+	class ransacPlane{
+	public:
+	//Constructor
+	ransacPlane() {
+	indexlist = new std::vector<int>;
+	}
+	float planetol; //Tolerance used for deciding wether a point is compatable with a plane
+	PointCloud<PointXYZRGB>::Ptr cloud; //Point cloud for holding the data set
+	PointCloud<PointXYZRGB>::Ptr segment; //Point cloud for holding the inlier points
+	std::vector<int> *indexlist; //Vector for holding the index of inlier points
+	
+	int iterations = 1000; //Maximum allowed iterations
+	Pnt ranPln; //Plane object represented in IPNS 
+	int candidates; //Number of candidates to detect
+	
+	
+	
+	
+	
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tol, int cand) {
+	cloud = cl;
+	planetol = tol;
+	candidates = cand;
+	}
+	
+	//Runs the primitive shape detection for a plane
+	bool compute() {
+	//Variables to keep track of the algorithm
+	vector<int> ran(3);
+	int count;
+	vector<Pnt> cand(candidates);
+	plane aplane; //Create a plane object from object.h
+	int can = 0;
+	int it = 0;
+	vector<int> inPoints(candidates);
+	
+	
+	///vars for probability stop
+	double k = 3.0;
+	double probability_ = 0.99;//prob. to get a selection without error
+	double log_probability = log(1.0 - probability_);
+	double one_over_indices = 1.0 / static_cast<double> (cloud->width);
+	
+	inPoints[0] = 0;
+	//Algorithm
+	//while (it < iterations) {
+	while (it < k && it < iterations) {
+	
+	//Generate random indexesx
+	for (int i = 0; i<3; i++) {
+	ran[i] = rand() % cloud->points.size();
+	}
+	//Create dual plane with indexed points from point cloud, using GA
+	//Creates a dual plane in confromal space from 3 indexed points in a point cloud
+	aplane.defineDual(cloud, ran); 
+	cand[0] = aplane.normDualPlane;
+	
+	//Find number of inlier points for each candidate
+	count = 0;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), cand[0])) {
+	count++;
+	}
+	}
+	/*
+	if (inPoints[0] == NULL) {
+	inPoints[0] = count;
+	}
+	*/
+	if (count > inPoints[0]) {
+	cand[0] = aplane.normDualPlane;
+	inPoints[0] = count;
+	can++;
+	
+	
+	// Compute the k parameter (k=log(z)/log(1-w^n))
+	double w = static_cast<double> (inPoints[0]) * one_over_indices;
+	double p_no_outliers = 1.0 - pow(w, (ran.size()));// 4 puntos para crear la esfera
+	// Avoid division by -Inf
+	p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon(), p_no_outliers);      
+	// Avoid division by 0. 
+	p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon(), p_no_outliers);   
+	k = log_probability / log(p_no_outliers);
+	
+	}
+	
+	it++;
+	}
+	
+	if (can > 0) {
+	//Find candidate with most inliers
+	int best = 0;
+	int numBest = 0;
+	for (int i = 0; i < cand.size(); i++) {
+	if (inPoints[i] > numBest) {
+	best = i;
+	numBest = inPoints[i];
+	}
+	}
+	
+	delete indexlist;
+	indexlist = new std::vector<int>;
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier(Vec(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z).null(), cand[0])) {
+	indexlist->push_back(j);
+	}
+	}
+	
+	ranPln = cand[0];
+	return true;
+	}
+	else {
+	return false;
+	}
+	
+	}
+	
+	private:
+	
+	//Function to check if a point is classified as a inlier
+	bool isInlier(Pnt point, Pnt plane) {
+	Sca distance = point <= plane;
+	if (abs(distance[0]) < planetol) {
+	return true;
+	}
+	else {
+	return false;
+	}
+	}
+	
+	};
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	
+	///////////////////////      CYLINDER     /////////////////////////////////////////
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	
+	//Class for detecting a cylinder in a point cloud using the sphere-sphere approach.
+	class ransacCylinder2{
+	public:
+	//Constructor
+	ransacCylinder2() {
+	indexlist = new std::vector<int>;
+	}
+	PointCloud<PointXYZRGB>::Ptr cloud; //Point cloud for storing the data 
+	PointCloud<PointXYZRGB>::Ptr inlierCloud; //Point cloud for storing the inliers
+	float tol = 0; //Float for the radius tolerance
+	float searchRadius = 0; //Float for storing the radius
+	int inliers; //Integer for storing the number of inliers
+	cylinder ranCyl; //Cylinder object
+	ransacSphere sph; //Sphere detection object
+	std::vector<int> *indexlist; //Vector for holding the index of inlier points
+	int candidates = 1;
+	int it=0;
+	int iterations = 3;
+	int count;
+	std::vector<int> ran;
+	int can = 0;
+	int numInliers;
+	
+	
+	
+	//Setting the data and parameters of the algoritm
+	void setData(PointCloud<PointXYZRGB>::Ptr cl, float tolerance) {
+	cloud = cl;
+	tol = tolerance;
+	//searchRadius = rad;
+	}
+	
+	//Runs the primitive shape detection for a cylinder using the sphere-sphere approach
+	bool compute() {
+	
+	vector<int> ran(4);
+	vector<cylinder> cand(candidates);
+	vector<int> inPoints(candidates);
+	//Variables to keep track of the algorithm
+	inlierCloud.reset(new PointCloud<PointXYZRGB>);
+	int icount=0;
+	Pnt p1, p2;
+	float p1rad, p2rad;
+	sphere s1, s2;
+	ransacSphere sph;
+	
+	
+	///vars for probability stop
+	double k = 300.0;
+	double probability_ = 0.9;//prob. to get a selection without error
+	double log_probability = log(1.0 - probability_);
+	double one_over_indices = 1.0 / static_cast<double> (cloud->width);
+	
+	
+	Pnt ni = Vec().null();
+	ni[0] = 0;
+	ni[1] = 0;
+	ni[2] = 0;
+	ni[3] = 0;
+	ni[4] = 1;
+	
+	inPoints[0] = 0;
+	//Algorithm
+	//while (it < iterations) {
+	while (it < k && it < iterations) {
+	
+	
+	
+	
+	
+	
+	//se calcula ransac para la esfera en agc
+	sph.setData(cloud, 0.001);
+	sph.compute();
+	s1 = sph.asphere; 
+	
+	//se calcula ransac para la esfera en agc
+	sph.setData(cloud, 0.001);
+	sph.compute();
+	s2 = sph.asphere;
+	
+	
+	searchRadius = (s1.radius + s2.radius) / 2;
+	
+	Par ppar = s1.dualSphere ^ s2.dualSphere;
+	Lin L1 =  ppar ^ ni;
+	
+	//Find number of inlier points for each candidate
+	count = 0;
+	if (searchRadius < 1.0) {
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier2(cloud->points[j].x, cloud->points[j].y,
+							 cloud->points[j].z, L1, searchRadius)) {
+	count++;
+	}
+	}
+	
+	}
+	/*
+	if (inPoints[0] == NULL) {
+	cand[0] = ranCyl;
+	inPoints[0] = count;
+	can++;
+	}
+	*/
+	if (count > inPoints[0]) {
+	cand[0].defineCylinder(s1, s2, searchRadius);
+	inPoints[0] = count;
+	can++;
+	
+	
+	// Compute the k parameter (k=log(z)/log(1-w^n))
+	double w = static_cast<double> (inPoints[0]) * one_over_indices;
+	double p_no_outliers = 1.0 - pow(w, (8));// 4 puntos para crear la esfera 8 para el cilindro
+	// Avoid division by -Inf
+	p_no_outliers = (std::max) (std::numeric_limits<double>::epsilon(), p_no_outliers);       
+	// Avoid division by 0.
+	p_no_outliers = (std::min) (1.0 - std::numeric_limits<double>::epsilon(), p_no_outliers);   
+	k = log_probability / log(p_no_outliers);
+	
+	
+	}
+	
+	it++;
+	}
+	
+	
+	
+	
+	if (can > 0 ) {
+	//Find candidate with most inliers
+	int best = 0;
+	numInliers = 0;
+	for (int i = 0; i < cand.size(); i++) {
+	if (inPoints[i] > numInliers) {
+	best = i;
+	numInliers = inPoints[i];
+	}
+	}
+	
+	ranCyl = cand[best];
+	
+	
+	
+	Lin L1 = ranCyl.s1.dualSphere  ^ ranCyl.s2.dualSphere ^ ni;
+	delete indexlist;
+	indexlist = new std::vector<int>;
+	if (ranCyl.radius < 1) {
+	for (int j = 0; j < cloud->points.size(); j++) {
+	if (isInlier2(cloud->points[j].x, cloud->points[j].y, cloud->points[j].z, L1, ranCyl.radius)) {
+	indexlist->push_back(j);
+	}
+	}
+	}
+	
+	
+	return true;
+	}
+	else {
+	//Return false if not
+	return false;
+	}
+	
+	
+	
+	
+	
+	}
+	
+	
+	private:
+	//Function to check if a point is classified as a inlier
+	bool isInlier2(float x, float y, float z, Lin L, float radius) {
+	Pnt p1 = Vec(x, y, z).null();
+	float rMax, rMin;
+	
+	rMax = radius + tol;
+	rMin = radius - tol;
+	
+	
+	DualSphere s= ((p1 ^ L.dual())/L.dual());
+	Sca d = ( s <= s);
+	if ( (sqrt( abs(d[0])) > (rMin)) && (sqrt(abs(d[0])) < (rMax))) {
+	return true;
+	}
+	else {
+	return false;
+	}
+	}
+	
+	};
+	
+	
+	
+	\end{lstlisting}
+}$ $ \\
+
+
+{\fontsize{7.5}{10} \selectfont
+\label{code:objects}
+\begin{lstlisting}[caption={Archivo objects.h}]
+//
+// Created by Aksel Sveier. Spring 2016
+//
+
+#ifndef RANSACGA_OBJECTS_H
+#define RANSACGA_OBJECTS_H
+
+#endif //RANSACGA_OBJECTS_H
+
+#include <space/vsr_cga3D_op.h>
+#include <pcl/point_types.h>
+#include <pcl/common/common_headers.h>
+
+using namespace vsr;
+using namespace vsr::cga;
+using namespace pcl;
+
+
+//Class that creates and handles spheres with CGA
+class sphere{
+
+public:
+float radius, x, y, z; //Floats for storing the parameters of the sphere
+Pnt dualSphere; //Stores the IPNS representation
+Sph sphe; //Stores the OPNS representation
+
+//Creates a sphere from center(x,y,z) coordinates and radius
+void defineDual(float x, float y, float z, float r) {
+dualSphere = normalize(Round::dls(Vec(x, y, z), r));
+radius = r;
+x = dualSphere[0]; y = dualSphere[1]; z = dualSphere[2];
+}
+
+//Creates a sphere from 4 points in conformal space.
+void defineDual(Pnt p1, Pnt p2, Pnt p3, Pnt p4) {
+dualSphere = normalize((p1^p2^p3^p4).dual());
+radius = calcRadius(dualSphere);
+x = dualSphere[0]; y = dualSphere[1]; z = dualSphere[2];
+}
+
+//Creates a sphere from 4 points from a pointcloud.
+void defineDual(PointCloud<PointXYZRGB>::Ptr cl1,
+			 PointCloud<PointXYZRGB>::Ptr cl2,
+			  PointCloud<PointXYZRGB>::Ptr cl3,
+			  PointCloud<PointXYZRGB>::Ptr cl4) {
+dualSphere = normalize((Vec(cl1->points[0].x, cl1->points[0].y, cl1->points[0].z).null()
+^ Vec(cl2->points[0].x, cl2->points[0].y, cl2->points[0].z).null()
+^ Vec(cl3->points[0].x, cl3->points[0].y, cl3->points[0].z).null()
+^ Vec(cl4->points[0].x, cl4->points[0].y, cl4->points[0].z).null()).dual());
+radius = calcRadius(dualSphere);
+x = dualSphere[0]; y = dualSphere[1]; z = dualSphere[2];
+}
+
+//Creates a sphere in from 4 indexed points in a point cloud
+void defineDual(PointCloud<PointXYZRGB>::Ptr cl, vector<int> index) {
+dualSphere = normalize(
+		(Vec(cl->points[index[0]].x, cl->points[index[0]].y, cl->points[index[0]].z).null()
+^ Vec(cl->points[index[1]].x, cl->points[index[1]].y, cl->points[index[1]].z).null()
+^ Vec(cl->points[index[2]].x, cl->points[index[2]].y, cl->points[index[2]].z).null()
+^ Vec(cl->points[index[3]].x, cl->points[index[3]].y, cl->points[index[3]].z).null()).dual());
+
+radius = calcRadius(dualSphere);
+x = dualSphere[0]; y = dualSphere[1]; z = dualSphere[2];
+
+}
+//Function that calculates radius
+float calcRadius(Pnt sph) {
+//return sqrt((1 / pow(sph[3], 2))*(pow(sph[0], 2) + 
+//			pow(sph[1], 2) + pow(sph[2], 2)) - (2 * sph[4] / sph[3]));
+Sca rad = Sca(2) * (Vec(sph[0], sph[1], sph[2]).null() <= sph);
+return sqrt(rad[0]);
+}
+
+private:
+//Function that normalizes a conformal vector
+Pnt normalize(Pnt dSph) {
+Pnt ret;
+for (int i = 0; i<5; i++) {
+ret[i] = dSph[i] / dSph[3];
+}
+return ret;
+}
+
+};
+
+//Class that creates and handles planes with CGA
+class plane
+{
+
+
+public:
+Pnt dualPlane; //Stores the IPNS representation
+Pnt normDualPlane; //Stores the normalized IPNS representation
+
+
+//Creates a plane from 3 points in conformal space
+void defineDual(Pnt p1, Pnt p2, Pnt p3) {
+dualPlane = (p1^p2^p3^Inf(1)).dual();
+normalize(dualPlane);
+}
+
+//Creates a plane from 3 indexed points in a point cloud
+void defineDual(PointCloud<PointXYZRGB>::Ptr cl, vector<int> index) {
+dualPlane = (Vec(cl->points[index[0]].x, cl->points[index[0]].y, cl->points[index[0]].z).null()
+^ Vec(cl->points[index[1]].x, cl->points[index[1]].y, cl->points[index[1]].z).null()
+^ Vec(cl->points[index[2]].x, cl->points[index[2]].y, cl->points[index[2]].z).null()
+^ Inf(1)).dual();
+normalize(dualPlane);
+}
+private:
+//Function that normalizes a conformal vector
+void normalize(Pnt dPln) {
+for (int i = 0; i < 5; i++) {
+normDualPlane[i] = dPln[i] / sqrt(pow(dPln[0], 2) + pow(dPln[1], 2) + pow(dPln[2], 2));
+}
+}
+
+
+};
+
+//Class that creates and handles circles with CGA
+class circle
+{
+
+public:
+float radius = 0; //Float for storing the circle radius
+Pnt circleCenter; //Point in conformal space for storing the circle center
+Par circ; //Store the OPNS representation
+Cir dualCircle; //Stores the IPNS representation
+Pnt plane; //Stores the plane the the circle lie on
+
+
+//Creates circle from 3 points in conformal space
+void defineCircle(Pnt p1, Pnt p2, Pnt p3) {
+dualCircle = p1 ^ p2 ^ p3;
+circ = (p1 ^ p2 ^ p3).dual();
+Pnt temp = ((p1 ^ p2 ^ p3).dual()) * Inf(1) * ((p1 ^ p2 ^ p3).dual());
+for (int i = 0; i<5; i++) {
+circleCenter[i] = temp[i] / temp[3];
+}
+findNormal((p1 ^ p2 ^ p3 ^ Inf(1)).dual());
+calcRadius(p1);
+}
+
+//Creates a circle from 3 point from a point cloud
+void defineCircle(PointCloud<PointXYZRGB>::Ptr cl, vector<int> index) {
+dualCircle = Vec(cl->points[index[0]].x, cl->points[index[0]].y, cl->points[index[0]].z).null()
+^ Vec(cl->points[index[1]].x, cl->points[index[1]].y, cl->points[index[1]].z).null()
+^ Vec(cl->points[index[2]].x, cl->points[index[2]].y, cl->points[index[2]].z).null();
+circ = dualCircle.dual();
+Pnt temp = circ * Inf(1) * circ;
+for (int i = 0; i<5; i++) {
+circleCenter[i] = temp[i] / temp[3];
+}
+findNormal((Vec(cl->points[index[0]].x, cl->points[index[0]].y, cl->points[index[0]].z).null() ^ 
+			Vec(cl->points[index[1]].x, cl->points[index[1]].y, cl->points[index[1]].z).null() ^
+			Vec(cl->points[index[2]].x, cl->points[index[2]].y, cl->points[index[2]].z).null() ^
+			Inf(1)).dual());
+calcRadius(Vec(cl->points[index[0]].x, cl->points[index[0]].y, cl->points[index[0]].z).null());
+}
+
+//Creates circle from 3 indexed points in a point cloud
+void defineCircle(PointXYZRGB p1, PointXYZRGB p2, PointXYZRGB p3) {
+dualCircle = Vec(p1.x, p1.y, p1.z).null()
+^ Vec(p2.x, p2.y, p2.z).null()
+^ Vec(p3.x, p3.y, p3.z).null();
+circ = dualCircle.dual();
+Pnt temp = circ * Inf(1) * circ;
+for (int i = 0; i<5; i++) {
+circleCenter[i] = temp[i] / temp[3];
+}
+findNormal((Vec(p1.x, p1.y, p1.z).null() ^ 
+			Vec(p2.x, p2.y, p2.z).null() ^ 
+			Vec(p3.x, p3.y, p3.z).null() ^ 
+			Inf(1)).dual());
+calcRadius(Vec(p1.x, p1.y, p1.z).null());
+}
+
+private:
+//Function that finds the cricle radius
+void calcRadius(Pnt p) {
+radius = sqrt(pow(p[0] - circleCenter[0], 2) + 
+				pow(p[1] - circleCenter[1], 2) + pow(p[2] - circleCenter[2], 2));
+}
+
+//Function that creates the plane that the cricle lies on
+void circle::findNormal(Pnt pln) {
+for (int i = 0; i < 5; i++) {
+plane[i] = pln[i] / sqrt(pow(pln[0], 2) + pow(pln[1], 2) + pow(pln[2], 2));
+}
+}
+
+
+};
+
+//Class that creates and handles cylinders with CGA
+class cylinder{
+
+
+//Since there is no representation of a cylinder in CGA a 
+//cylinder will be represente by a circle on a plane.
+//The direction of the normal of the plane in the circle center 
+//will be the center-axis of the cylinder
+public:
+Pnt plan; //Store the IPNS representation of a plane
+Pnt center; //Stores the center in a conformal vector
+float radius = 11000; //Float for storing the radius
+sphere s1, s2;
+
+
+//Creates a cylinder from two points in conformal space on the center axis and a radius
+void defineCylinder(sphere p1, sphere p2, float rad) {
+radius = rad;
+center = Vec(p1.x,p1.y,p1.z).null();
+plan = Vec(p1.x-p2.x, p1.y-p2.y, p1.z-p2.z).null();
+s1 = p1;
+s2 = p2;
+}
+/*
+//Creates a cylinder from 3 points in conformal space
+void defineCylinder(Pnt p1, Pnt p2, Pnt p3) {
+plane pln;
+pln.defineDual(p1, p2, p3);
+plan = pln.normDualPlane;
+circle cir;
+cir.defineCircle(p1, p2, p3);
+center = cir.circleCenter;
+radius = cir.radius;
+}
+*/
+//Creates the cylinder from 3 indexed points in a point cloud
+void defineCylinder(PointCloud<PointXYZRGB>::Ptr cl, vector<int> index) {
+plane pln;
+pln.defineDual(cl, index);
+plan = pln.normDualPlane;
+circle cir;
+cir.defineCircle(cl, index);
+center = cir.circleCenter;
+radius = cir.radius;
+}
+
+
+
+
+};
+
+
+\end{lstlisting}
+}$ $ \\
+

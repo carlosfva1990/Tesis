@@ -1,0 +1,212 @@
+% book example for classicthesis.sty
+\documentclass[
+  % Replace twoside with oneside if you are printing your thesis on a single side
+  % of the paper, or for viewing on screen.
+  oneside,
+  twoside,
+  12pt, letterpaper,
+  footinclude=true,
+  headinclude=true,
+  cleardoublepage=empty
+  spanish
+]{scrbook}
+%\usepackage[spanish]{babel}
+\usepackage[linedheaders,parts,pdfspacing]{classicthesis}
+\usepackage[utf8]{inputenc}%ñ y acentos
+%\usepackage{mathptmx}% http://ctan.org/pkg/mathptmx   similar a times new roman
+\usepackage{titletoc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{float}%H figures place
+\usepackage{longtable}
+\usepackage{appendix}
+\usepackage{datagidx}%para crear índices y glosarios
+%\usepackage{showframe}  %Muestra los margenes de las paginas
+%\usepackage{lipsum}
+%\usepackage{amsmath}
+%\usepackage{acronym}
+%\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[linesnumbered,vlined,ruled,algochapter,spanish]{algorithm2e}
+%\usepackage[section]{placeins}
+%\usepackage{titlesec}
+%\usepackage{subcaption}
+%\usepackage{xcolor}
+\usepackage{color}
+%\usepackage{easylist }
+%\usepackage{enumerate}
+%\usepackage{enumitem }
+\usepackage{tocbibind}
+\usepackage{letltxmacro}
+\usepackage{epstopdf}    
+\usepackage{gensymb}
+\usepackage{stmaryrd}
+\usepackage{siunitx}
+\usepackage{placeins}
+\usepackage{geometry}
+\geometry{
+	letterpaper,
+	total={140mm,257mm},
+	left=40mm,
+	top=20mm,
+	bottom=20mm,
+	right=20mm,
+	footskip=10mm,
+}
+
+% margenes
+%\setlength{\textwidth}{140mm}
+%\setlength{\oddsidemargin}{1mm}
+
+%\areaset[current]{412pt}{761pt} % 686 (factor 2.2) + 33 head + 42 head \the\footskip
+
+% este codigo da formato a los codigos
+\lstset{
+    frame=tb, % draw a frame at the top and bottom of the code block
+    tabsize=4, % tab space width
+    showstringspaces=false, % don't mark spaces in strings
+    numbers=left, % display line numbers on the left
+    commentstyle=\color{green}, % comment color
+    keywordstyle=\color{blue}, % keyword color
+    stringstyle=\color{red} % string color
+}
+
+\title{DESARROLLO DE UN SISTEMA QUE REPRESENTA OBJETOS
+	CON GEOMETRÍAS SIMPLES USANDO ÁLGEBRA GEOMÉTRICA CONFORME}
+\author{Villaseñor Altamirano Carlos Francisco}
+
+
+\titlecontents{chapter}[1.5em]{}
+{\contentslabel{2.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[1pc]{.}\contentspage}
+
+\titlecontents{section}[2.3em]{}
+{\contentslabel{2.3em}}
+{\hspace*{-2.3em}}
+{\titlerule*[1pc]{.}\contentspage}
+
+\titlecontents{subsection}[3.8em]{} % note that 3.8 = 1.5 + 2.3
+{\contentslabel{3.2em}}
+{\hspace*{-3.2em}}
+{\titlerule*[1pc]{.}\contentspage}
+
+\titlecontents{figure}
+[0em]{}
+{\thecontentslabel\hspace*{1.5em}}
+{}{\ \titlerule*[1pc]{.}\contentspage}
+
+\titlecontents{table}
+[0em]{}
+{\thecontentslabel\hspace*{1.5em}}
+{}{\ \titlerule*[1pc]{.}\contentspage}
+
+
+
+\let\oldeqref\eqref
+\RenewDocumentCommand\eqref{oom}{%
+	\IfNoValueTF{#2}{\def\eqafter{}}{\def\eqafter{#2}}%
+	\IfNoValueTF{#1}
+	{\oldeqref{#3}}
+	{(#1 \textup{\ref{#3}}\eqafter)}%
+}
+
+
+
+% se agrega el archivo del glosario
+\input{00FrontBackMatter/glosario.tex}
+
+
+
+\renewcommand\tablename{Tabla}
+\renewcommand\figurename{Figura}
+
+
+
+\begin{document}
+    % portada y todo lo que va antes del índice
+    \frontmatter
+    \input{00FrontBackMatter/portada}
+    
+    %\begin{addmargin}[-1cm]{-3cm}
+        %	\includegraphics[width=1.5\textwidth]{FrontBackMatter/Captura2.JPG}
+        %	\includegraphics[width=1.5\textwidth]{FrontBackMatter/Captura1.JPG}
+    %\end{addmargin}
+    
+    %\clearpage
+    %\input{00FrontBackMatter/declaration}
+    \input{00FrontBackMatter/Abstract}
+    %\input{00FrontBackMatter/dedication}
+    %\input{00FrontBackMatter/acknowledgements}
+    \input{00FrontBackMatter/contents}
+    
+    % inicio del documento
+    \mainmatter
+    
+    \chapter{Introducción}
+        \input{01Introduccion/0Motivacion.tex}
+        \input{01Introduccion/2marco_teorico}
+        \input{01Introduccion/1antecedentes}
+        \input{01Introduccion/4planteamiento_del_problema}
+        \input{Introduccion/3justificacion}
+        \input{01Introduccion/5objetivo_general}
+        \input{01Introduccion/6objetivos_especificos}
+        \input{01Introduccion/7solucion_propuesta}
+        \input{01Introduccion/8aportaciones}
+    
+    
+    \chapter{Desarrollo}
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
+    
+        \input{02Desarrollo/Metodologia/00Metodoologia.tex}
+        \input{02Desarrollo/Preprocesamiento/00preprocesamiento.tex}
+        \input{02Desarrollo/RANSAC/00RANSAC.tex}
+        \input{02Desarrollo/AGC/00AGC.tex}
+        
+        
+    \chapter{Pruebas y Caso de estudio}
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
+    
+        \input{03Resultados/pruebas.tex}
+        
+    \chapter{Análisis de Resultados}
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
+    
+        \input{03Resultados/analisis.tex}
+        
+    \chapter{Consideraciones Finales}
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
+        
+        \input{03Resultados/conclusion.tex}%juntar
+        
+        %\input{03Resultados/trabajofuturo.tex}%%%%
+    
+    \backmatter   
+    %\bibliographystyle{acm}
+    
+    \bibliographystyle{IEEEtran}
+    \bibliography{bibliografia}
+    %
+    
+    
+    \renewcommand{\appendixname}{Apéndices}
+    \renewcommand{\appendixtocname}{Apéndices}
+    \renewcommand{\appendixpagename}{Apéndices}
+    \renewcommand{\thesection}{\Alph{section}}
+    \addappheadtotoc
+    \appendixpage
+    \appendix
+    \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+    \renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+    \renewcommand{\thelstlisting}{\Alph{section}.\arabic{lstlisting}}
+    
+        \input{Apendice/Pruebas}
+    	\input{Apendice/codigos}
+
+\end{document}

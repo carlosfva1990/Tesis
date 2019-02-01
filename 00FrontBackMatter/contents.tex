@@ -1,0 +1,50 @@
+%*******************************************************
+% Table of Contents
+%*******************************************************
+%\pdfbookmark[1]{\contentsname}{Contenido}
+\setcounter{tocdepth}{1} % <-- 2 includes up to subsections in the ToC
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+
+
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+
+\renewcommand{\bibname}{Referencias} %%no name
+
+\renewcommand{\contentsname}{Contenido}
+\tableofcontents 
+
+%*******************************************************
+% List of Figures and of the Tables
+%*******************************************************
+
+%*******************************************************
+% List of Figures
+%*******************************************************   
+\pdfbookmark[1]{\listfigurename}{lof}
+
+\renewcommand{\listfigurename}{Índice de Figuras}
+\listoffigures
+
+%*******************************************************
+% List of Tables
+%*******************************************************
+\pdfbookmark[1]{\listtablename}{lot}
+\renewcommand{\listtablename}{Índice de Tablas}
+\listoftables
+  
+%*******************************************************
+% List of Listings
+%******************************************************* 
+\pdfbookmark[1]{lstlistingname}{loc}
+\renewcommand{\lstlistlistingname}{Índice de Códigos}
+\renewcommand*{\lstlistingname}{Código}
+\lstlistoflistings 
+   
+   \newcommand{\listofalgorithmes}{\tocfile{\listalgorithmcfname}{loa}}
+   \listofalgorithmes
+%----------------------------------------------------------------------------------------
+%	ABBREVIATIONS
+%----------------------------------------------------------------------------------------
+
+\printterms[columns=1,style=align]
