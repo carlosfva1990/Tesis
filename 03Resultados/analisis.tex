@@ -1,5 +1,5 @@
 
-Para analizar los datos obtenidos del caso de estudio presentado en el capítulo anterior, se visualizó la el caso de estudio de dos formas distintas; la primera una prueba de calidad usando la exactitud y precisión de cada método, y la segunda una prueba de rendimiento donde se comparó los tiempos de cada método.\\
+Para analizar los datos obtenidos del caso de estudio presentado en el capítulo anterior, se visualizó el caso de estudio de dos formas distintas; la primera una prueba de calidad usando la exactitud y precisión de cada método, y la segunda una prueba de rendimiento donde se comparó los tiempos de cada método.\\
 
 Ya que se busca comparar el método usando AE y AGC para cada modelo, realizamos una comparación entre estos métodos para cada modelo propuesto.\\
 
@@ -8,7 +8,7 @@ Ya que se busca comparar el método usando AE y AGC para cada modelo, realizamos
 
 %La comparación del tiempo se realizó con la media de los tiempos. Ya que el método usando AE se realizó con la biblioteca PCL, los tiempos obtenidos con este método son considerados como el punto de comparación, dicho de otra forma, se consideró el tiempo obtenido por el método AE con cada objeto como el cien por ciento del tiempo de ejecución.\\
 
-%En la tabla \ref{tab:tEsf} se muestran los tiempos para la prueba de la \gls{esfera} expresados en porcentajes, donde se observa que usando AGC se obtiene una mejora de tiempo del $13.3\%$ respecto del otro método que usa AE  \\
+%En la tabla \ref{tab:tEsf} se muestran los tiempos para la prueba de la \gls{esfera} expresados en porcentajes, donde se observa que usando AGC se obtiene una mejora de tiempo del $13.3\%$ respecto del otro método que usa AE. \\
 % 
 %
 %
@@ -18,20 +18,20 @@ Ya que se busca comparar el método usando AE y AGC para cada modelo, realizamos
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  tiempo(seg.) & tiempo(\%) \\ \hline
+%		& tiempo(seg.) & tiempo(\%) \\ \hline
 %		AE & 2.5284 & 100\% \\
 %		AGC & 2.1921 & 86.69\% \\ \hline
 %	\end{tabular}
 %	\label{tab:tEsf}
 %\end{table}
 
-Para comparar la calidad de la clasificación para representar una esfera, se calcula con la ecuación \eqref[ec.]{eq:precision}, ya que los datos se trabajaron en el lenguaje de programación R, para el calculo de la precisión se puede realizar usando el comando $mean()$. \\
+Para comparar la calidad de la clasificación para representar una esfera, se calcula con la ecuación \eqref[ec.]{eq:precision}, ya que los datos se trabajaron en el lenguaje de programación R, para el cálculo de la precisión se puede realizar usando el comando $mean()$. \\
 %en el caso de la esfera la precisión obtenida se muestra en la tabla \ref{tab:eypesfera},
-La precisión calculada para el método usando AE fue de $1.00$, y usando AGC se obtuvo $0.99$, aplicando un criterio en el cual consideramos que si los valores se mantienen en un intervalo de $\pm 0.025$ se consideran como iguales, ya que $-0.025<(1.00-0.99)<0.025$, se obtiene que la precisión entre los métodos no varia. \\
+La precisión calculada para el método usando AE fue de $1.00$, y usando AGC se obtuvo $0.99$, aplicando un criterio en el cual consideramos que si los valores se mantienen en un intervalo de $\pm 0.025$ se consideran como iguales, ya que $-0.025<(1.00-0.99)<0.025$, se obtiene que la precisión entre los métodos no varía. \\
 
-Para la exactitud se evalúa usando la prueba de suma de rangos de Wilcoxon para datos independientes. A continuación se describen los pasos usados en el calculo de la prueba de Wilcoxon para la esfera.\\
+Para la exactitud se evalúa usando la prueba de suma de rangos de Wilcoxon para datos independientes. A continuación, se describen los pasos usados en el cálculo de la prueba de Wilcoxon para la esfera.\\
 
-En el código \ref{code:cargaDatosEsfera}, para el lenguaje R, se muestra la lectura de los archivos de resultados y se carga en la variable $esferaAE$ y $esferaAGC$, estas son tablas que contienen los tiempos parciales de ejecución, el $veredicto$ es una columna con modelo elegido para representar al objeto, y el $metodo$ se refiere al método usado, $0$para AE, y $1$ para AGC. Se eliminan los casos que no aportan información a la prueba, esto es si no existe un veredicto, lo cual ocurre al inicio cuando aun no se captura la nube de puntos que sera el escenario, así como los que no representaron realizaron una buena representación, para el caso de la esfera el como del $veredicto$ debe contener la palabra $"sphere,"$($"plane,"$para el plano y $"cylinder,"$ para el cilindro), y por ultimo también se quitan los casos cuando se usa un método distinto al deseado.\\
+En el código \ref{code:cargaDatosEsfera}, para el lenguaje R, se muestra la lectura de los archivos de resultados y se carga en la variable $esferaAE$ y $esferaAGC$, estas son tablas que contienen los tiempos parciales de ejecución, el $veredicto$ es una columna con modelo elegido para representar al objeto, y el $metodo$ se refiere al método usado, $0$para AE, y $1$ para AGC. Se eliminan los casos que no aportan información a la prueba, esto es si no existe un veredicto, lo cual ocurre al inicio cuando aún no se captura la nube de puntos que será el escenario, así como los que no representaron realizaron una buena representación, para el caso de la esfera el como del $veredicto$ debe contener la palabra $"sphere,"$($"plane,"$para el plano y $"cylinder,"$ para el cilindro), y por ultimo también se quitan los casos cuando se usa un método distinto al deseado.\\
 
 
 {\small 
@@ -51,7 +51,7 @@ esferaAGC <- esferaAGC[!paraEliminar,]
 	\end{lstlisting}
 }$ $ \\
 
-A continuación en el código \ref{code:rnagosEsfera} se muestra la  seleccionan los primeros treinta datos, de cada método, se juntan los datos en $esferaRank$, y se calcula el rango según el valor obtenido de exactitud, la exactitud fue calculada usando la ecuación \eqref[ec.]{eq:exactitud}.\\
+A continuación, en el código \ref{code:rnagosEsfera} se muestra la seleccionan los primeros treinta datos, de cada método, se juntan los datos en $esferaRank$, y se calcula el rango según el valor obtenido de exactitud, la exactitud fue calculada usando la ecuación \eqref[ec.]{eq:exactitud}.\\
 
 
 {\small 
@@ -65,7 +65,7 @@ esferaRank$rango=rank(esferaRank$exactitud)
 	\end{lstlisting}
 }$ $ \\
 
-En el código \ref{code:zEsfera}, se observa como se separa el grupo que usa AGC, y se realiza la suma de los rangos y se guarda en la variable $sum$ (el numero $13$ corresponde al indice de la columna de los rangos), se calcula $\mu_r$, $\sigma_R$ y $z$.\\
+En el código \ref{code:zEsfera}, se observa cómo se separa el grupo que usa AGC, y se realiza la suma de los rangos y se guarda en la variable $sum$ (el numero $13$ corresponde al índice de la columna de los rangos), se calcula $\mu_r$, $\sigma_R$ y $z$.\\
 
 {\small 
 	\label{code:zEsfera}
@@ -81,7 +81,7 @@ En el código \ref{code:zEsfera}, se observa como se separa el grupo que usa AGC
 	\end{lstlisting}
 }$ $ \\
 
-Obteniendo un valor $z=-5.6$, comparando $z$ en el intervalo $[-1.96,1.96]$ se observa que $z<-1.96$ por lo cual la hipótesis nula es descartada, y se afirma que la exactitud obtenida por el método usando AE es diferente a la obtenida por AGC. La media para el método usando AE es $0.9597$ y usando AGC es $0.8581$, con lo cual se asegura que para representar objetos esféricos el método usando AE es mas exacto que usando AGC.
+Obteniendo un valor $z=-5.6$, comparando $z$ en el intervalo $[-1.96,1.96]$ se observa que $z<-1.96$ por lo cual la hipótesis nula es descartada, y se afirma que la exactitud obtenida por el método usando AE es diferente a la obtenida por AGC. La media para el método usando AE es $0.9597$ y usando AGC es $0.8581$, con lo cual se asegura que para representar objetos esféricos el método usando AE es más exacto que usando AGC.
 
 
 
@@ -91,7 +91,7 @@ Obteniendo un valor $z=-5.6$, comparando $z$ en el intervalo $[-1.96,1.96]$ se o
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  Precisión(\%) & Exactitud(\%) \\ \hline
+%		& Precisión(\%) & Exactitud(\%) \\ \hline
 %		AE & 100\% & 95.97\% \\
 %		AGC & 99\% & 85.81\% \\ \hline
 %	\end{tabular}
@@ -108,9 +108,9 @@ Obteniendo un valor $z=-5.6$, comparando $z$ en el intervalo $[-1.96,1.96]$ se o
 
 De manera similar a la esfera se calcularon los valores de la exactitud y precisión para un modelo \gls{plano}.\\
 
-Para evaluar la precisión al representar un objeto plano, el valor obtenido usando el método  con AE es de $0.90$ y usando AGC es de $0.94$, aplicando el mismo criterio para el intervalo $\pm 0.025$, se obtiene que $(0.90-0.94)<-0.025$, con lo cual se afirma que la precisión entre los métodos es diferente, y que el método que usa AGC es mas preciso que el que usa AE.\\
+Para evaluar la precisión al representar un objeto plano, el valor obtenido usando el método  con AE es de $0.90$ y usando AGC es de $0.94$, aplicando el mismo criterio para el intervalo $\pm 0.025$, se obtiene que $(0.90-0.94)<-0.025$, con lo cual se afirma que la precisión entre los métodos es diferente, y que el método que usa AGC es más preciso que el que usa AE.\\
 
-Mientras que para la evaluación de la exactitud, se calculo un valor $z=-0.887$, ya que $-1.95<-0.887<1.95$ se confirma la hipótesis nula, la cual afirma que la exactitud de los métodos para representar objetos planos es igual.
+Mientras que, para la evaluación de la exactitud, se calculó un valor $z=-0.887$, ya que $-1.95<-0.887<1.95$ se confirma la hipótesis nula, la cual afirma que la exactitud de los métodos para representar objetos planos es igual.
 
 
 %
@@ -123,7 +123,7 @@ Mientras que para la evaluación de la exactitud, se calculo un valor $z=-0.887$
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  tiempo(seg.) & tiempo(\%) \\ \hline
+%		& tiempo(seg.) & tiempo(\%) \\ \hline
 %		AE & 1.9156 & 100\% \\
 %		AGC & 2.9803 & 155.58\% \\ \hline
 %	\end{tabular}
@@ -137,7 +137,7 @@ Mientras que para la evaluación de la exactitud, se calculo un valor $z=-0.887$
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  Precisión(\%) & Exactitud(\%) \\ \hline
+%		& Precisión(\%) & Exactitud(\%) \\ \hline
 %		AE & 90\% & 95.97\% \\
 %		AGC & 94\% & 85\% \\ \hline
 %	\end{tabular}
@@ -149,11 +149,11 @@ Mientras que para la evaluación de la exactitud, se calculo un valor $z=-0.887$
 
 \section{Objeto Cilíndrico}
 
-Por último tenemos el modelo del \gls{cilindro}. Al igual que para el plano y la esfera se realizaron los cálculos de forma similar.\\
+Por último, tenemos el modelo del \gls{cilindro}. Al igual que para el plano y la esfera se realizaron los cálculos de forma similar.\\
 
-Para evaluar la precisión al representar un objeto cilíndrico, el valor obtenido  usando el método con AE es de $0.47$ y usando AGC es de $0.96$, aplicando el mismo criterio para el intervalo $\pm 0.025$, se obtiene que $(0.47-0.96)<-0.025$, con lo cual se afirma que la precisión entre los métodos es diferente, y que el método que usa AGC es mas preciso que el que usa AE.\\
+Para evaluar la precisión al representar un objeto cilíndrico, el valor obtenido  usando el método con AE es de $0.47$ y usando AGC es de $0.96$, aplicando el mismo criterio para el intervalo $\pm 0.025$, se obtiene que $(0.47-0.96)<-0.025$, con lo cual se afirma que la precisión entre los métodos es diferente, y que el método que usa AGC es más preciso que el que usa AE.\\
 
-Mientras que para la evaluación de la exactitud,  se calculo un valor $z=0.761$, ya que $-1.95<0.761<1.95$ se confirma la hipótesis nula, la cual afirma que la exactitud de los métodos para representar objetos cilíndricos es igual.
+Mientras que, para la evaluación de la exactitud,  se calculó un valor $z=0.761$, ya que $-1.95<0.761<1.95$ se confirma la hipótesis nula, la cual afirma que la exactitud de los métodos para representar objetos cilíndricos es igual.
 
 %
 %\begin{table}
@@ -161,7 +161,7 @@ Mientras que para la evaluación de la exactitud,  se calculo un valor $z=0.761$
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  tiempo(seg.) & tiempo(\%) \\ \hline
+%		& tiempo(seg.) & tiempo(\%) \\ \hline
 %		AE & 1.7205 & 100\% \\
 %		AGC & 1.9997 & 116.23\% \\ \hline
 %	\end{tabular}
@@ -175,7 +175,7 @@ Mientras que para la evaluación de la exactitud,  se calculo un valor $z=0.761$
 %	\centering
 %	\begin{tabular}{lll}
 %		\hline
-%		&  Precisión(\%) & Exactitud(\%) \\ \hline
+%		& Precisión(\%) & Exactitud(\%) \\ \hline
 %		AE & 47\% & 64.17\% \\
 %		AGC & 96\% & 71.37\% \\ \hline
 %	\end{tabular}
@@ -189,11 +189,11 @@ Mientras que para la evaluación de la exactitud,  se calculo un valor $z=0.761$
 %	\centering
 %	\begin{tabular}{llll}
 %		\hline
-%		& Tiempo(\%) &  Precisión(\%) & Exactitud(\%) \\ \hline
+%		& Tiempo(\%) & Precisión(\%) & Exactitud(\%) \\ \hline
 %		Esfera & -13\% & -1\% & -10.16\% \\
 %		Plano & +55.58\% & +4\% & -10.97\% \\
-%		Cilindro & +16.23\% & +49\%  & +7.2\%\\ \hline
-%		Media & +19.60\% & +17.33\%  & -4.64\%\\
+%		Cilindro & +16.23\% & +49\% & +7.2\%\\ \hline
+%		Media & +19.60\% & +17.33\% & -4.64\%\\
 %		 \hline
 %	\end{tabular}
 %	\label{tab:ResAna}

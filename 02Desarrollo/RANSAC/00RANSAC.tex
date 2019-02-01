@@ -1,6 +1,6 @@
-\section{Clasificación de objetos}  
+ \section{Clasificación de objetos}  
     \subsection{Transformada de Hough}
-        La transformada de Hough es usada para encontrar lineas y circunferencias en una imagen, como se ve en la figura \ref{fig:unityhough}. En el trabajo Extending Generalized Hough Transform to Detect 3D Objects in
+        La transformada de Hough es usada para encontrar líneas y circunferencias en una imagen, como se ve en la figura \ref{fig:unityhough}. En el trabajo Extending Generalized Hough Transform to Detect 3D Objects in
         Laser Range Data se plantea una modificación de la transformada de Hough para usarla en espacios 3D con nubes de puntos y en lugar de buscar líneas encontrar cilindros.\\
         
         
@@ -16,11 +16,11 @@
     \subsection{Red Neuronal}
         El método anterior se descartó y analizó el problema desde otra perspectiva. Un método que ha dado buenos resultados en el área de visión por computadora son las redes neuronales.\\
         
-        Una red neuronal es una abstracción de como se cree funciona el cerebro, teniendo como base una neurona la cual tiene estímulos de entrada y dependiendo de una función de activación envía una señal de salida. La función de activación depende de las señales de entrada y valores que se ajustan de manera automática en el entrenamiento.\\
+        Una red neuronal es una abstracción de cómo se cree funciona el cerebro, teniendo como base una neurona la cual tiene estímulos de entrada y dependiendo de una función de activación envía una señal de salida. La función de activación depende de las señales de entrada y valores que se ajustan de manera automática en el entrenamiento.\\
         
         Las redes neuronales son capaces de realizar tareas de reconocimiento de manera rápida y bastante acertada, la desventaja se encuentra en el proceso de aprendizaje también llamado entrenamiento, para que la red neuronal pueda reconocer un objeto, la red debe estar entrenada para reconocer dicho objeto. Eso crea el problema de generar una base de datos de cada objeto a usar, luego realizar el entrenamiento.\\
         
-        Dado a que no se cuenta con una base de datos de los objetos que se quieren representar y lo complicado que seria para el usuario agregar nuevos objetos, este método también fue descartado.
+        Dado a que no se cuenta con una base de datos de los objetos que se quieren representar y lo complicado que sería para el usuario agregar nuevos objetos, este método también fue descartado.
         
         
         
@@ -94,37 +94,37 @@
 %        
         Donde:
         \begin{itemize}
-            \item nuevoObjeto - Nube de puntos obtenida del pre-procesamiento.
+            \item nuevoObjeto - Nube de puntos obtenida del preprocesamiento.
             \item n - Número mínimo de puntos para crear la esfera (4 puntos)
             \item k - Número máximo de iteraciones permitidas.
             \item t - Valor del intervalo de error permitido para determinar si un dato pertenece al modelo.
         \end{itemize}
     	
-    	En el pseudocódigo las variables $mejorModelo$ y $mayorPuntosEnLaEsfera$  guardan la descripción del mejor modelo obtenido por el método RANSAC y la lista de los puntos que pertenecen a esa descripción del modelo, se inician con el valor $null$, para evitar confusiones con los otros valores, ya que $null \neq 0$, la variable $iteraciones$ encargada de contar el numero de ciclos realizados se inicia en 0, y el valor de $k$ esta dado por el numero de repeticiones que necesarias para encontrar una buena estimación del modelo, el cual se calcula mas adelante.\\
+    	En el pseudocódigo las variables $mejorModelo$ y $mayorPuntosEnLaEsfera$  guardan la descripción del mejor modelo obtenido por el método RANSAC y la lista de los puntos que pertenecen a esa descripción del modelo, se inician con el valor $null$, para evitar confusiones con los otros valores, ya que $null \neq 0$, la variable $iteraciones$ encargada de contar el número de ciclos realizados se inicia en 0, y el valor de $k$ esta dado por el número de repeticiones que necesarias para encontrar una buena estimación del modelo, el cual se calcula más adelante.\\
     	
         
-        En este caso se uso el modelo de una \gls{esfera} en AE la cual usa cuatro puntos para describirla,  el modelo cuenta con cuatro variables a definir $(x,y,z,r)$, que corresponden al centro de la esfera y su radio, aquí es donde se obtiene el valor de la variable $n$, que esta dado por la cantidad de puntos en  $puntosAleatorios$ que son el conjunto mínimo puntos necesarios para encontrar los valores para $(x,y,z,r)$, se calcula el modelo resultante $nuevaEsfera$ usando la ecuación \eqref[ec.]{eq:esferaAE}.
+        En este caso se usó el modelo de una \gls{esfera} en AE la cual usa cuatro puntos para describirla,  el modelo cuenta con cuatro variables a definir $(x,y,z,r)$, que corresponden al centro de la esfera y su radio, aquí es donde se obtiene el valor de la variable $n$, que está dado por la cantidad de puntos en  $puntosAleatorios$ que son el conjunto mínimo puntos necesarios para encontrar los valores para $(x,y,z,r)$, se calcula el modelo resultante $nuevaEsfera$ usando la ecuación \eqref[ec.]{eq:esferaAE}.
         \begin{equation}
             \label{eq:esferaAE}
             \left(x-x_0\right)^2+\left(y-y_0\right)^2+\left(z-z_0\right)^2=r^2
         \end{equation}
-        Para el \gls{plano} en AE se usa la forma normal de Hesse el cual consiste en la ecuación \eqref[ec.]{eq:Hesse}, donde $n$ es el vector normal al plano y $d$ es la distancia que hay del origen al plano, el signo de $d$ también determina en que dirección de $n$ se encuentra el origen, si $d>0$ entonces el origen se encuentra en la dirección de $n$, si $d<0$ el origen se encuentra en dirección contraria a $n$.
+        Para el \gls{plano} en AE se usa la forma normal de Hesse el cual consiste en la ecuación \eqref[ec.]{eq:Hesse}, donde $n$ es el vector normal al plano y $d$ es la distancia que hay del origen al plano, el signo de $d$ también determina en qué dirección de $n$ se encuentra el origen, si $d>0$ entonces el origen se encuentra en la dirección de $n$, si $d<0$ el origen se encuentra en dirección contraria a $n$.
         
         \begin{equation}
             \label{eq:Hesse}
             n\cdot x=-d
         \end{equation}
-        Por último para el \gls{cilindro} se usa la construcción mostrada en la ecuación \eqref[ec.]{eq:cilindro}, usando un punto base $x=(x,y,z)$ por el cual pasa un eje en dirección del vector $n=(x,y,z)$ y un radio $r$.\\
+        Por último, para el \gls{cilindro} se usa la construcción mostrada en la ecuación \eqref[ec.]{eq:cilindro}, usando un punto base $x=(x,y,z)$ por el cual pasa un eje en dirección del vector $n=(x,y,z)$ y un radio $r$.\\
         
         \begin{equation}
         \label{eq:cilindro}
             C=\{x,n,r\}
         \end{equation}
-        Los puntos $puntosAleatorios$ son elegidos de forma aleatoria y el modelo resultante $nuevaEsfera$ es comparada con cada punto en la nube de puntos para ver cuales puntos cumplen con la descripción del modelo, en otras palabras se revisa si el punto pertenece a la superficie del objeto, si es así, el punto se agrega a la lista $puntosEnLaEsfera$.\\
+        Los puntos $puntosAleatorios$ son elegidos de forma aleatoria y el modelo resultante $nuevaEsfera$ es comparada con cada punto en la nube de puntos para ver cuales puntos cumplen con la descripción del modelo, en otras palabras, se revisa si el punto pertenece a la superficie del objeto, si es así, el punto se agrega a la lista $puntosEnLaEsfera$.\\
         
         La lista resultante se compara con la lista generada por el mejor modelo encontrado, para el primer ciclo, como aún no se tiene un modelo anterior para comparar, el modelo y la lista tienen un valor $null$, por lo cual el primer modelo calculado se guarda como el mejor modelo, que posteriormente será remplazado por alguno mejor.\\
         
-        Para calcular el número de repeticiones $k$ necesarias para elegir un buen conjunto de puntos $n$, siendo $w$ la probabilidad  de que un punto seleccionado pertenece a una buena aproximación del modelo y su tolerancia de error, obtenemos la ecuación \eqref[ec.]{eq:Ek}.
+        Para calcular el número de repeticiones $k$ necesarias para elegir un buen conjunto de puntos $n$, siendo $w$ la probabilidad de que un punto seleccionado pertenece a una buena aproximación del modelo y su tolerancia de error, obtenemos la ecuación \eqref[ec.]{eq:Ek}.
         
         \begin{equation}
             \label{eq:Ek}
@@ -151,7 +151,7 @@
             E(k)= 1/b=w^{-n}
         \end{equation}
         
-        En la tabla \ref{tb:Ek} se muestran los valores para $E(k)$ variando los valores de $n$ y $w$, siendo $n=4$ para la esfera y $w=0.2$ serian necesarias al menos $625$ repeticiones.
+        En la tabla \ref{tb:Ek} se muestran los valores para $E(k)$ variando los valores de $n$ y $w$, siendo $n=4$ para la esfera y $w=0.2$ serían necesarias al menos $625$ repeticiones.
     % Please add the following required packages to your document preamble:
     % \usepackage{graphicx}
     \begin{table}[!htb]
@@ -164,15 +164,15 @@
     0.9 & 1.1 & 1.2 & 1.4 & 1.5 & 1.7 & 1.9 \\
     0.8 & 1.3 & 1.6 & 2.0 & 2.4 & 3.0 & 3.8 \\
     0.7 & 1.4 & 2.0 & 2.9 & 4.2 & 5.9 & 8.5 \\
-    0.6 & 1.7 & 2.8 & 4.6 & 7.7 & 13  & 21  \\
-    0.5 & 2.0 & 4.0 & 8.0 & 16  & 32  & 64  \\
-    0.4 & 2.5 & 6.3 & 16  & 39  & 98  & 244 \\
-    0.3 & 3.3 & 11  & 37  & 123 & 412 & --  \\
-    0.2 & 5.0 & 25  & 125 & 625 & --  & --  \\ \hline
+    0.6 & 1.7 & 2.8 & 4.6 & 7.7 & 13 & 21 \\
+    0.5 & 2.0 & 4.0 & 8.0 & 16 & 32 & 64 \\
+    0.4 & 2.5 & 6.3 & 16 & 39 & 98 & 244 \\
+    0.3 & 3.3 & 11 & 37 & 123 & 412 & -- \\
+    0.2 & 5.0 & 25 & 125 & 625 & -- & -- \\ \hline
     \end{tabular}
     \end{table}
         
-        De igual manera se busca exceder el valor de $E(k)$ por una o dos derivaciones estándar. La derivación estándar $SD(k)$ esta dada por la ecuación \eqref[ec.]{eq:SDk}
+        De igual manera se busca exceder el valor de $E(k)$ por una o dos derivaciones estándar. La derivación estándar $SD(k)$ está dada por la ecuación \eqref[ec.]{eq:SDk}
         
         \begin{equation}
             \label{eq:SDk}
@@ -184,7 +184,7 @@
             \label{eq:Ekpow2}
             E(k^2)=\frac{2-b}{b^2}
         \end{equation}
-        Y $SD(k)$ queda como en la ecuación \eqref[ec.]{eq:SDk2}, que para la esfera se obtiene un valor de $SD(k)=625.499\simeq 626 $, dando un valor total de repeticiones para el calculo del modelo de la esfera de $k=E(k)+SD(k)=625+626=1,250$.
+        Y $SD(k)$ queda como en la ecuación \eqref[ec.]{eq:SDk2}, que para la esfera se obtiene un valor de $SD(k)=625.499\simeq 626 $, dando un valor total de repeticiones para el cálculo del modelo de la esfera de $k=E(k)+SD(k)=625+626=1,250$.
         
         \begin{equation}
             \label{eq:SDk2}
@@ -203,7 +203,7 @@
         
         Donde $N$ es la cantidad de puntos en la nube de puntos, $n$ los puntos que pertenecen al modelo.\\
         
-        La probabilidad de encontrar el modelo luego de $k$ iteraciones esta dada por  $P_{(n.k)}$ que se muestra  en la ecuación \eqref[ec.]{eq:probnk}. 
+        La probabilidad de encontrar el modelo luego de $k$ iteraciones está dada por $P_{(n.k)}$ que se muestra en la ecuación \eqref[ec.]{eq:probnk}. 
     
         \begin{equation}
             \label{eq:probnk}
@@ -255,7 +255,7 @@
 \section{Descripción General del Sistema}
         
         
-    Para comprender el desarrollo de este \gls{sistema} en la figura \ref{fig:mainDiagram} se muestra el diagrama de flujo que describe el comportamiento del sistema. Se observa que son importar que datos de obtengan el sistema siempre realiza ocho procesos, los primeros cuatro procesos corresponden al pre-procesamiento en el cual se obtienen, filtran y separan los datos obtenidos del Kinect, luego se observa el cálculo de los modelos (esfera, plano y cilindro), ya sea usando AE o AGC el método se realiza de la misma manera para luego compararlos dependiendo de cual describe mejor a al conjunto de datos obtenidos, para el uso de AGC los puntos fueron transformados del espacio euclidiano $\mathbb{R}^{3}$ al espacio $\mathbb{R}^{n+1,1}$, así como las figuras obtenidas usando AGC fueron interpretadas para su representación en el espacio euclidiano.
+    Para comprender el desarrollo de este \gls{sistema} en la figura \ref{fig:mainDiagram} se muestra el diagrama de flujo que describe el comportamiento del sistema. Se observa que son importar que datos de obtengan el sistema siempre realiza ocho procesos, los primeros cuatro procesos corresponden al preprocesamiento en el cual se obtienen, filtran y separan los datos obtenidos del Kinect, luego se observa el cálculo de los modelos (esfera, plano y cilindro), ya sea usando AE o AGC el método se realiza de la misma manera para luego compararlos dependiendo de cual describe mejor a al conjunto de datos obtenidos, para el uso de AGC los puntos fueron transformados del espacio euclidiano $\mathbb{R}^{3}$ al espacio $\mathbb{R}^{n+1,1}$, así como las figuras obtenidas usando AGC fueron interpretadas para su representación en el espacio euclidiano.
     \clearpage
     \begin{figure}[!htb]
        	\centering

@@ -1,12 +1,12 @@
 \section{Pre-Procesamiento}
 
-    A continuación se describen las herramientas y métodos usados en el pre-procesamiento para obtener los datos del sensor Kinect, crear la nube de puntos,  y separar la nube de puntos en nubes mas pequeñas que contienen los objetos a representar.
+    A continuación, se describen las herramientas y métodos usados en el preprocesamiento para obtener los datos del sensor Kinect, crear la nube de puntos,  y separar la nube de puntos en nubes más pequeñas que contienen los objetos a representar.
    
     
     \subsection{Biblioteca de Nubes de Puntos(PCL)}
     
     	
-        Para realizar el manejo de \glspl{nube de puntos} se uso la biblioteca de nubes de puntos (PCL por sus iniciales en inglés)\cite{Rusu_ICRA2011_PCL}, la cual cuenta con un conjunto de herramientas comúnmente usadas para quitar ruido, agrupar puntos, segmentación, etc.\\
+        Para realizar el manejo de \glspl{nube de puntos} se usó la biblioteca de nubes de puntos (PCL por sus iniciales en inglés)\cite{Rusu_ICRA2011_PCL}, la cual cuenta con un conjunto de herramientas comúnmente usadas para quitar ruido, agrupar puntos, segmentación, etc.\\
         
         \begin{figure}[!htb] 
             \centering
@@ -15,14 +15,14 @@
             \label{fig:PCL}
         \end{figure}
         
-        PCL es un proyecto de código abierto. El logotipo del proyecto se puede ver en la figura \ref{fig:PCL}, desarrollado y apoyado por grandes empresas, este proyecto se distribuye bajo la licencia BSD modificada (de 3 cláusulas). Se ha probado en sistemas Linux, MacOS y Windows, además de que el código esta creado de forma modular lo que permite elegir que características usar y cuales descartar.\\
+        PCL es un proyecto de código abierto. El logotipo del proyecto se puede ver en la figura \ref{fig:PCL}, desarrollado y apoyado por grandes empresas, este proyecto se distribuye bajo la licencia BSD modificada (de 3 cláusulas). Se ha probado en sistemas Linux, MacOS y Windows, además de que el código esta creado de forma modular lo que permite elegir qué características usar y cuales descartar.\\
         
         
     \subsection{Obtención de datos}
     
-        La obtención de una nube de puntos puede ser dada por una variedad de \glspl{sensor}, estos se clasifican según la tecnología usada para obtener la imagen de profundidad, algunos ejemplos son los sensores: ultrasónicos, infrarrojos, estereoscópicos. En este caso particular se utiliza el sensor de Microsorft Kinect 2.0, ya que es uno de los dispositivos que generan imágenes de profundidad con mayor soporte y de los más conocidos, ademas con un precio de \$2,699.00 MXN \cite{XBOXONEK76:online}, es un dispositivo bastante accesible.\\
+        La obtención de una nube de puntos puede ser dada por una variedad de \glspl{sensor}, estos se clasifican según la tecnología usada para obtener la imagen de profundidad, algunos ejemplos son los sensores: ultrasónicos, infrarrojos, estereoscópicos. En este caso particular se utiliza el sensor de Microsoft Kinect 2.0, ya que es uno de los dispositivos que generan imágenes de profundidad con mayor soporte y de los más conocidos, además con un precio de \$2,699.00 MXN \cite{XBOXONEK76:online}, es un dispositivo bastante accesible.\\
         
-        Para generar la nube de puntos a usar es necesario un intermediario entre PCL y el Kinect ya que los datos del Kinect no se encuentran listos para ser usados directamente con la bibliotecas de PCL, ya que la información obtenida del Kinect son tres imágenes, de color, infrarroja y de profundidad,como se muestra en la figura \ref{fig:imgKinect} \cite{UsodelKi56:online}, estas imágenes se combinan para construir una nube de puntos, primero se juntan las imágenes de color y la de profundidad y luego se genera la nube de puntos la cual representa cada pixel de la imagen de profundidad en un arreglo de puntos junto con el color asignado a cada uno. \\
+        Para generar la nube de puntos a usar es necesario un intermediario entre PCL y el Kinect ya que los datos del Kinect no se encuentran listos para ser usados directamente con la bibliotecas de PCL, ya que la información obtenida del Kinect son tres imágenes, de color, infrarroja y de profundidad, como se muestra en la figura \ref{fig:imgKinect} \cite{UsodelKi56:online}, estas imágenes se combinan para construir una nube de puntos, primero se juntan las imágenes de color y la de profundidad y luego se genera la nube de puntos la cual representa cada pixel de la imagen de profundidad en un arreglo de puntos junto con el color asignado a cada uno. \\
           
          \begin{figure}[!htb] 
          	\centering
@@ -49,13 +49,13 @@
         
        
         
-        Mientras libfreenect2pclgrabber \cite{k2g} es un proyecto desarrollado por  Dr. Giacomo Dabisias ingeniero de software en lyft \cite{k2g},  que cuenta con una biblioteca que actúa como intermediario creando nubes de puntos a partir de las imágenes  infrarrojas, de profundidad y color obtenidas del controlador libfreenect. Se uso este proyecto de software libre ya que cuenta con soporte para sistemas operativos Linux, MacOs y Windows, permitiendo la reproducción e integración del sistema desarrollado en diferentes sistemas operativos.  \\ 
+        Mientras libfreenect2pclgrabber \cite{k2g} es un proyecto desarrollado por Dr. Giacomo Dabisias ingeniero de software en Lyft \cite{k2g},  que cuenta con una biblioteca que actúa como intermediario creando nubes de puntos a partir de las imágenes infrarrojas, de profundidad y color obtenidas del controlador libfreenect. Se uso este proyecto de software libre ya que cuenta con soporte para sistemas operativos Linux, MacOS y Windows, permitiendo la reproducción e integración del sistema desarrollado en diferentes sistemas operativos.  \\ 
         
         Luego de que el controlador obtiene los datos del sensor y son convertidos en una nube de puntos es posible empezar a trabajar con ellos usando las herramientas de PCL.\\
     
     \subsection{Filtrado de densidad de puntos}
     
-        Dado que la nube de puntos obtenida cuenta con muchos datos, el procesamiento se vuelve lento. Para disminuir la carga de trabajo de la computadora lo primero que se realiza es un filtrado de densidad de puntos, dicho de otra manera se busca disminuir la cantidad de puntos en la nube, parecido a cuando se reduce el tamaño de una imagen.\\
+        Dado que la nube de puntos obtenida cuenta con muchos datos, el procesamiento se vuelve lento. Para disminuir la carga de trabajo de la computadora lo primero que se realiza es un filtrado de densidad de puntos, dicho de otra manera, se busca disminuir la cantidad de puntos en la nube, parecido a cuando se reduce el tamaño de una imagen.\\
         
         Este \gls{filtro} calcula una nueva nube de puntos la cual contiene menos información de la original, un ejemplo de este filtro se puede ver en la figura \ref{fig:FiltroDensidad}. cada uno de los nuevos puntos es una representación de un conjunto de puntos que se encuentran dentro de alguna vecindad.\\
         

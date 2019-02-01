@@ -13,7 +13,7 @@ Se investigaron las técnicas de visión por computadora de la transformada de H
 
 Se desarrollo un sistema que permite representar objetos reales según su geometría y presentarlos en un ambiente virtual usando RANSAC para obtener las geometrías.\\
 
-%segmentacion
+%segmentación
 
 Se modificó el algoritmo RANSAC para usarlo con AGC el cual comparado con el algoritmo usando AE de la biblioteca PCL se obtuvieron los resultados desfavorables en la exactitud para la detección de esferas, y con precisión similar entre AE y AGC para las otras geometrías, pero con resultados favorables para la precisión con objetos planos y cilíndricos, y precisión similar para objetos esféricos.\\
 
@@ -27,7 +27,7 @@ Se modificó el algoritmo RANSAC para usarlo con AGC el cual comparado con el al
 
 %uno a uno de los objetivos y como se cumplieron
 
-%destacar aporte
+%hay que destacar aporte
 
 \section{Trabajo a futuro}
 
@@ -35,12 +35,12 @@ Como posibles trabajos a futuro se tiene:
 
 
 \begin{itemize}
-	\item Realización de una pruebas de rendimiento.
-	\item Paralelización del sistema, modificar la forma de trabajo para realizar la obtención de los modelos de forma paralela, cada que se obtienen nuevos datos del sensor generar un hilo para obtener resultados mas fluidos, así como la paralelización de operaciones en AGC,
+	\item Realización de una prueba de rendimiento.
+	\item Paralelización del sistema, modificar la forma de trabajo para realizar la obtención de los modelos de forma paralela, cada que se obtienen nuevos datos del sensor generar un hilo para obtener resultados más fluidos, así como la paralelización de operaciones en AGC,
 	\item Implementación de métodos RANSAC modificados como PROSAC (PROgressive SAmple Consensus), Preemptive RANSAC o R-RANSAC, cada método mejora cierto aspecto del algoritmo, mejores estimaciones, más rápidos, etc. 
 	\item Modificar el sistema para usar una combinación de los dos métodos y aprovechar las mejores características de cada uno, así beneficiarse de los tiempos obtenidos en modelos AE y la precisión obtenida para AGC.
 	\item Mejorar el modelo obtenido aplicando el método de mínimos cuadrados.
-	\item Desarrollo de modelos que describan mas geometrías (prismas, pirámides, etc.).
+	\item Desarrollo de modelos que describan más geometrías (prismas, pirámides, etc.).
 	
 \end{itemize}
 
