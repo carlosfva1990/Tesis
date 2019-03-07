@@ -1,14 +1,14 @@
 \section{Marco teórico}
 
-Para el desarrollo de este trabajo se abordan temas como la obtención de datos (visión por computadora), clasificación (RANSAC) y la implementación de AGC.  Por lo cual, a continuación, se describen los conceptos necesarios para el desarrollo.
+Para el desarrollo de este trabajo se abordan temas como la obtención de la informacion en una ecena (visión por computadora), clasificación (RANSAC) y la implementación usando AGC.  Por lo cual, a continuación, se describen los conceptos necesarios para su desarrollo.
 
 \subsection{Representación Digital}
 
-Una imagen digital es guardada según el formato de imagen (TIFF, BMP, JPEG, etc.), pero todas las imágenes luego de su interpretación son representadas en una computadora por un arreglo bidimensional de \glspl{pixel}.\\
+Una imagen digital es guardada en una computadora usando formatos de imagen (TIFF, BMP, JPEG, etc.), pero todas las imágenes luego ser interpretadas son representadas en una pantalla por un arreglo bidimensional de \glspl{pixel}.\\
 
-El arreglo de píxeles se puede ver como un conjunto de matrices numéricas, dependiendo la representación del píxel (RGB, CMY, RGBA, CMYA, etc.) son los canales necesarios para representarlo por completo. Así una imagen en RGB (rojo, verde, azul por sus siglas en inglés) cuenta con tres canales, cada canal define la intensidad de cada color, así para mostrar una imagen $MxN$ en RGB es necesario tres matrices de $M$ filas y $N$ columnas.\\
+El arreglo de píxeles se puede ver como un conjunto de matrices, dependiendo del modelo del color usado en la representación del píxel (RGB, CMY, RGBA, CMYA, etc.) son los canales de colores o umero de bits necesarios para representarlo por completo. Así una imagen en RGB (rojo, verde, azul por sus siglas en inglés) cuenta con tres canales de color, cada canal define la intensidad de cada color que al mesclarse crean el color deseado, así para mostrar una imagen $MxN$ en RGB es necesario tres matrices de $M$ filas y $N$ columnas, una que define la intencidad del color rojo, otra para el verde y la ultima para el azul.\\
 
-De esta manera es posible generar una imagen nueva a partir de otras realizando operaciones sobre imágenes como la suma, resta y multiplicación, aplicando una transformación como se muestra en la ecuación \eqref[ec.]{eq:transfimg}.\\
+Usando el concepto de que una imagen se representa como una matriz, es posible generar una imagen nueva a partir de otras realizando operaciones como la suma, resta y multiplicación, aplicando una transformación como se muestra en la ecuación \eqref[ec.]{eq:transfimg}.\\
 
 \begin{equation}
 \label{eq:transfimg}
@@ -16,10 +16,13 @@ q(x,y)=f(p_1(x,y),p_2(x,y))
 \end{equation}
 Donde $p_1$ es un píxel de la imagen 1 y $p_2$ un píxel de la imagen 2 y $q(x,y)$ el píxel resultante de la nueva imagen \cite{martinsanz2007ejercicios}.\\
 
-Una \gls{nube de puntos} se describe como el conjunto de puntos en un espacio dado o una estructura de datos usada para representar una colección de puntos \cite{weinmann2016reconstruction}. Al trabajar con nubes de puntos se pueden pensar en ellas como una imagen de tres dimensiones y en lugar de un píxel se trabajan sobre \glspl{punto}. Al igual que las imágenes.\\
+Si una imagen es una matriz bidimencional, entonces una matriz tridimencional genera una \gls{nube de puntos}, esta se describe como el conjunto de puntos en un espacio dado o una estructura de datos usada para representar una colección de puntos \cite{weinmann2016reconstruction}. Al trabajar con nubes de puntos se pueden pensar en ellas como una imagen de tres dimensiones y en lugar de un píxel la unidad se le denomina \gls{punto}. Asi como el uso de transformaciones al igual que las imágenes.\\
 
-A diferencia de una \gls{imagen} una nube de puntos puede o no estar organizada en filas y columnas, sensores como el Kinect en los que se obtiene una imagen de profundidad se obtiene una nube de puntos de $MxN$ puntos, mientras que otras nubes de puntos tienden a ser solo una lista $Mx1$ de puntos en el espacio \cite{Rusu_ICRA2011_PCL}.\\
+A diferencia de una \gls{imagen} una nube de puntos puede o no estar organizada en filas y columnas, ya que a diferencia de la imagen una nube de puntos puede estar dada por una lista que contiene unicamente los puntos en la nube, sensores como el Kinect en los que se obtiene una imagen de profundidad se obtiene una nube de puntos de $MxN$ puntos, mientras que otras nubes de puntos tienden a ser solo una lista $Mx1$ de puntos en el espacio \cite{Rusu_ICRA2011_PCL}.\\
 
+%agregar imagenes de las diferentes nubes de puntos
+Un punto esta definido por si pocicion en el espacio, aunque ambien puede contenter información de color y brillo similar a la de un pixel.
+%agregar imagenes de las diferentes nubes de puntos
 
 \subsection{Sensor Kinect}
 
@@ -38,7 +41,7 @@ En el caso del PlayStation de Sony, que usa un PS/Move, mostrado en la figura \r
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.2\textwidth]{01Introduccion/imagenes/PsMOve.JPG}
+	\includegraphics[width=0.2\textwidth]{01Introduccion/imagenes/PsMove.JPG}
 	\caption{Control PS/Move de Sony} 
 	\label{fig:psMove}
 \end{figure}
