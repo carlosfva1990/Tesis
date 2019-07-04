@@ -1,34 +1,40 @@
 \section{Marco teórico}
 
-Para el desarrollo de este trabajo se abordan temas como la obtención de la informacion en una ecena (visión por computadora), clasificación (RANSAC) y la implementación usando AGC.  Por lo cual, a continuación, se describen los conceptos necesarios para su desarrollo.
+En este trabajo se abordan temas como visión por computadora, para la obtención de información en una escena;  RANSAC, el método usado para la clasificación de los objetos; y AGC, para la modificar el metodo RANSAC.  Por lo cual, a continuación, se describen los conceptos necesarios para su entendimiento.
 
 \subsection{Representación Digital}
 
-Una imagen digital es guardada en una computadora usando formatos de imagen (TIFF, BMP, JPEG, etc.), pero todas las imágenes luego ser interpretadas son representadas en una pantalla por un arreglo bidimensional de \glspl{pixel}.\\
+El ser humano usa sus sentidos para interpretar el mundo que lo rodea, usa la visión para conocer la forma, ubicación, color de algún objeto; el tacto le permite conocer la dureza, textura y forma; y se manera similar cada sentido aporta información del mundo en el que nos encontramos, y que posteriormente permite crear una reconstrucción mental.\\
 
-El arreglo de píxeles se puede ver como un conjunto de matrices, dependiendo del modelo del color usado en la representación del píxel (RGB, CMY, RGBA, CMYA, etc.) son los canales de colores o umero de bits necesarios para representarlo por completo. Así una imagen en RGB (rojo, verde, azul por sus siglas en inglés) cuenta con tres canales de color, cada canal define la intensidad de cada color que al mesclarse crean el color deseado, así para mostrar una imagen $MxN$ en RGB es necesario tres matrices de $M$ filas y $N$ columnas, una que define la intencidad del color rojo, otra para el verde y la ultima para el azul.\\
+Para realizar una representación del mundo imitamos la forma en que cada uno de nosotros logra la abstracción del mundo real, asi las computadoras realizan algunos comportamientos como la detección de algún objeto en especifico, , para esto se necesitan periféricos de entrada que le permitan a una computadora obtener la información necesaria. Para el caso de la visión se utiliza una cámara digital, la cual es un arreglo matricial de sensores de luz, cada sensor genera una porción de una imagen, entre mas sensores se tengan en el arreglo se consigue una imagen mas con mas detalle, en lugar del oído la computadora usa un micrófono, etc. \\
+
+Para crear una imagen se agrupa en una matriz los datos obtenidos de la cámara digital, cada sensor de la cámara genera un pixel de información, un pixel guarda la información de la luz que corresponde a ese espacio de la matriz, al tener un arreglo de pixeles se forma una imagen.
+Para guardar una imagen en una computadora se usan formatos de imagen (TIFF, BMP, JPEG, etc.), pero todas las imágenes son representadas por un arreglo bidimensional de \glspl{pixel}.\\
+
+El  píxel se representa como un conjunto de datos, y existen diferentes formas de representar un píxel (RGB, CMY, RGBA, CMYA, etc.) dependiendo del formato que se usa son los canales de información o umero de bits necesarios para representarlo por completo. Así una imagen en RGB (rojo, verde, azul por sus siglas en inglés) cuenta con tres canales de color, cada canal define la intensidad de cada color que al mezclarse crean el color deseado, así para mostrar una imagen $MxN$ en RGB es necesario tres matrices de $M$ filas y $N$ columnas, una que define la intensidad del color rojo, otra para el verde y la ultima para el azul.\\
 
 Usando el concepto de que una imagen se representa como una matriz, es posible generar una imagen nueva a partir de otras realizando operaciones como la suma, resta y multiplicación, aplicando una transformación como se muestra en la ecuación \eqref[ec.]{eq:transfimg}.\\
 
 \begin{equation}
 \label{eq:transfimg}
 q(x,y)=f(p_1(x,y),p_2(x,y))
-\end{equation}
-Donde $p_1$ es un píxel de la imagen 1 y $p_2$ un píxel de la imagen 2 y $q(x,y)$ el píxel resultante de la nueva imagen \cite{martinsanz2007ejercicios}.\\
+\end{equation}\\
 
-Si una imagen es una matriz bidimencional, entonces una matriz tridimencional genera una \gls{nube de puntos}, esta se describe como el conjunto de puntos en un espacio dado o una estructura de datos usada para representar una colección de puntos \cite{weinmann2016reconstruction}. Al trabajar con nubes de puntos se pueden pensar en ellas como una imagen de tres dimensiones y en lugar de un píxel la unidad se le denomina \gls{punto}. Asi como el uso de transformaciones al igual que las imágenes.\\
+Donde $p_1$ es un píxel de la imagen 1 y $p_2$ un píxel de la imagen 2, $f$ es una función de transformación, y $q(x,y)$ el píxel resultante de la nueva imagen \cite{martinsanz2007ejercicios}.\\
+
+Si una imagen es una matriz bidimencional, entonces una matriz tridimencional genera una \gls{nube de puntos}, esta se describe como el conjunto de puntos en un espacio dado o una estructura de datos usada para representar una colección de puntos \cite{weinmann2016reconstruction}. Al trabajar con nubes de puntos se pueden pensar en ellas como una imagen de tres dimensiones y en lugar de un píxel la unidad se le denomina \gls{punto}. Así es posible el uso de transformaciones al igual que con las imágenes.\\
 
 A diferencia de una \gls{imagen} una nube de puntos puede o no estar organizada en filas y columnas, ya que a diferencia de la imagen una nube de puntos puede estar dada por una lista que contiene unicamente los puntos en la nube, sensores como el Kinect en los que se obtiene una imagen de profundidad se obtiene una nube de puntos de $MxN$ puntos, mientras que otras nubes de puntos tienden a ser solo una lista $Mx1$ de puntos en el espacio \cite{Rusu_ICRA2011_PCL}.\\
 
 %agregar imagenes de las diferentes nubes de puntos
-Un punto esta definido por si pocicion en el espacio, aunque ambien puede contenter información de color y brillo similar a la de un pixel.
+Un punto esta definido por su posición en el espacio, aunque también puede contener información de color y brillo similar a un pixel.
 %agregar imagenes de las diferentes nubes de puntos
 
 \subsection{Sensor Kinect}
 
-En el desarrollo de vídeo juegos, la competencia entre grandes empresas ha dado como resultado en una variedad de dispositivos que le permiten al usuario una interacción más natural con entornos virtuales. Estos dispositivos son variados tanto en sus componentes físicos como en la forma de interacción. unos de los dispositivos más conocidos son el Wii Mote, PS/Move y el Kinect.\\
+En el desarrollo de vídeo juegos, la competencia entre grandes empresas ha dado como resultado en una variedad de dispositivos que le permiten al usuario una interacción natural con los entornos virtuales de los vídeo juegos. Estos dispositivos son variados tanto en sus componentes físicos como en la forma de interacción. unos de los dispositivos más conocidos son el Wii Mote, PS/Move y el Kinect.\\
 
-Para la consola Wii de Nintendo se usa un Wii Mote, mostrado en la figura \ref{fig:WiiMote}, que, con el uso de una barra de leds infrarrojos y sensores de posición y aceleración, es capaz de obtener su posición respecto la barra de leds \cite{UsodelKi56:online}.\\
+Para la consola Wii de Nintendo se usa un Wii Mote, mostrado en la figura \ref{fig:WiiMote}, que, con el uso de una barra de leds infrarrojos y sensores de posición y aceleración, es capaz de obtener su ubicación y orientación respecto la barra de leds colocada sobre la televisión \cite{UsodelKi56:online}.\\
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.4\textwidth]{01Introduccion/imagenes/wiiMote.JPG}
@@ -37,7 +43,7 @@ Para la consola Wii de Nintendo se usa un Wii Mote, mostrado en la figura \ref{f
 \end{figure}
 
 
-En el caso del PlayStation de Sony, que usa un PS/Move, mostrado en la figura \ref{fig:psMove}, se usa una cámara de vídeo que, junto con sensores de posición y aceleración, se realiza esta interacción.\\
+En el caso del PlayStation de Sony, que usa un PS/Move, mostrado en la figura \ref{fig:psMove}, se usa una cámara de vídeo que, junto con sensores de posición y aceleración, se obtiene la ubicación y orientación del dispositivo.\\
 
 \begin{figure}[!htb]
 	\centering
@@ -89,16 +95,18 @@ El dispositivo Kinect cuenta con dos versiones el primero se anunció con la con
 
 
 \subsection{Visión Por Computadora}
+En la sección anterior se explica como es que las computadoras logran obtener información del mundo que los rodea, pero eso no es suficiente, ya que no vasta con ver hay que observar y analizar el entorno. El poder reconocer un color o una forma son acciones simples que aprendemos de pequeños y realizamos todo el tiempo, pero para una computadora, en la que todas las instrucciones deben ser explicitas, no es tan sencillo, con esta idea en mente surge una rama de la computación llamada visión por computadora\\
 
-La visión por computadora trata de describir el mundo que vemos a partir de una o varias imágenes y reconstruir sus propiedades, como forma, color e intensidad de luz, tratando de imitar la visión de una persona. Es usada en gran cantidad de aplicaciones como: reconocimiento óptico de letras, inspección de productos en fábricas, modelado 3D, reconocimiento facial, etc. \cite{CompVisionSpringer}.\\
+La visión por computadora trata de describir el mundo que vemos a partir de diferentes técnicas las cuales usan una o varias imágenes para reconstruir sus propiedades, colores y tonalidad de luces, tratando de encontrar similitudes ente estas y algun modelo predefinido. La visión por computadora es usada en gran cantidad de aplicaciones como: reconocimiento de textos, inspección de calidad para productos, reconstrucción de modelos 3D, reconocimiento facial, etc. \cite{CompVisionSpringer}.\\
 
-Se llevan a cabo varios procesos antes de someter una imagen a reconocimiento, esto sirve para resaltar puntos importantes, facilitar la detección de características, eliminar ruido, etc. Estos procesos son diferentes según el problema a tratar, pero ayudan en gran medida mejorar el reconocimiento de objetos por la computadora, y en conjunto se les conoce como preprocesamiento de imagen.\\
+Para realizar estas acciones se llevan a cabo varios procesos antes de someter una imagen a un algoritmo de reconocimiento, esto sirve para resaltar puntos importantes, facilitar la detección de características, eliminar ruido, etc. Estos procesos son diferentes según el problema a tratar, pero ayudan en gran medida mejorar el reconocimiento de objetos por la computadora, y en conjunto se les conoce como preprocesamiento de imagen.\\
 
-Para que la computadora sea capaz de reconocer su entorno existen diferentes técnicas como la selección de puntos característicos o de marcadores en un objeto visto por dos o más cámaras y el cálculo de su posición usando las imágenes obtenidas; también el análisis de la perspectiva de una imagen (buscando rectas o círculos) o algoritmos de búsqueda como los usados en sistemas con inteligencia artificial (redes neuronales o K vecinos más próximos). \\
+Para que la computadora sea capaz de reconocer su entorno existen diferentes técnicas como: la selección de puntos característicos o marcadores en un objeto, %visto por dos o más cámaras y el cálculo de su posición usando las imágenes obtenidas;
+ también el análisis de la perspectiva de una imagen (buscando rectas o círculos), algoritmos de búsqueda como los usados en sistemas con inteligencia artificial (redes neuronales o K vecinos más próximos), entre otros. \\
 
 \subsubsection{Transformada de Hough}
 
-El algoritmo usado para la transformada de Hough (TH) fue patentado en 1962 por P. Hough como un método para reconocer líneas rectas y más tarde se extendió para detectar figuras complejas, como círculos, polígonos o elipses, y se le llamó la transformada de Hough generalizada, esta técnica permite la detección de los parámetros de un modelo usando un sistema de votación en el cual cada dato favorece al conjunto de parámetros que satisfacen al modelo para dicho dato,  aunque la TH se ha visto que tiene dificultad para trabajar con modelos con gran cantidad de incógnitas\cite{CompVisionKinecthough}. \\
+El algoritmo usado para la transformada de Hough (TH) fue patentado en 1962 por P. Hough como un método para reconocer líneas rectas y más tarde se extendió para detectar figuras complejas, como círculos, polígonos o elipses, y se le llamó la transformada de Hough generalizada, esta técnica permite la detección de los parámetros de un modelo usando un sistema de votación en el cual cada dato favorece al conjunto de parámetros que satisfacen al modelo para dicho dato,  como desventaja la TH se ha visto que tiende a incrementar la complejidad en modelos con gran cantidad de incógnitas\cite{CompVisionKinecthough}. \\
 
 Por ejemplo, si quisiéramos detectar una línea recta, lo primero que se necesita es saber la definición de una línea recta, esta está definida como la sucesión de puntos que se extienden en una misma dirección. y su representación matemática está dada por la ecuación \eqref[ec.]{eq:linea}\\
 

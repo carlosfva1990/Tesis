@@ -8,27 +8,27 @@
 \ttl@tocsep 
 \ttl@tocsep 
 \ttl@tocsep 
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Control Wii Mote de Nintendo\relax }}{3}{figure.caption.3}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces Control PS/Move de Sony\relax }}{3}{figure.caption.4}
-\contentsline {figure}{\numberline {1.3}{\ignorespaces Sensor Kinect 1\relax }}{4}{figure.caption.5}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Sensor Kinect 2.0\relax }}{5}{figure.caption.7}
-\contentsline {figure}{\numberline {1.5}{\ignorespaces Diagrama de flujo del m\IeC {\'e}todo RANSAC\relax }}{7}{figure.caption.9}
-\contentsline {figure}{\numberline {1.6}{\ignorespaces Calculo de cinem\IeC {\'a}tica inversa para un robot simple\relax }}{12}{figure.caption.12}
-\contentsline {figure}{\numberline {1.7}{\ignorespaces Sistema de un robot m\IeC {\'e}dico.}}{12}{figure.caption.13}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{12}{subfigure.7.1}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{12}{subfigure.7.2}
-\contentsline {figure}{\numberline {1.8}{\ignorespaces Segmentaci\IeC {\'o}n de una imagen.}}{13}{figure.caption.14}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{13}{subfigure.8.1}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{13}{subfigure.8.2}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces { }}}{13}{subfigure.8.3}
-\contentsline {figure}{\numberline {1.9}{\ignorespaces T\IeC {\'e}cnica de preprocesamiento}}{14}{figure.caption.15}
-\contentsline {figure}{\numberline {1.10}{\ignorespaces Reconocimiento de objetos usando normales.}}{14}{figure.caption.16}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{14}{subfigure.10.1}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{14}{subfigure.10.2}
-\contentsline {figure}{\numberline {1.11}{\ignorespaces Modelado de un cilindro usando AGC.}}{15}{figure.caption.17}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{15}{subfigure.11.1}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{15}{subfigure.11.2}
-\contentsline {figure}{\numberline {1.12}{\ignorespaces Diagrama del sistema propuesto\relax }}{17}{figure.caption.18}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Control Wii Mote de Nintendo\relax }}{4}{figure.caption.3}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Control PS/Move de Sony\relax }}{4}{figure.caption.4}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Sensor Kinect 1\relax }}{5}{figure.caption.5}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Sensor Kinect 2.0\relax }}{6}{figure.caption.7}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Diagrama de flujo del m\IeC {\'e}todo RANSAC\relax }}{9}{figure.caption.9}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Calculo de cinem\IeC {\'a}tica inversa para un robot simple\relax }}{13}{figure.caption.12}
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Sistema de un robot m\IeC {\'e}dico.}}{14}{figure.caption.13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{14}{subfigure.7.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{14}{subfigure.7.2}
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Segmentaci\IeC {\'o}n de una imagen.}}{14}{figure.caption.14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{14}{subfigure.8.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{14}{subfigure.8.2}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces { }}}{14}{subfigure.8.3}
+\contentsline {figure}{\numberline {1.9}{\ignorespaces T\IeC {\'e}cnica de preprocesamiento}}{15}{figure.caption.15}
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Reconocimiento de objetos usando normales.}}{16}{figure.caption.16}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{16}{subfigure.10.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{16}{subfigure.10.2}
+\contentsline {figure}{\numberline {1.11}{\ignorespaces Modelado de un cilindro usando AGC.}}{16}{figure.caption.17}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces { }}}{16}{subfigure.11.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces { }}}{16}{subfigure.11.2}
+\contentsline {figure}{\numberline {1.12}{\ignorespaces Diagrama del sistema propuesto\relax }}{18}{figure.caption.18}
 \ttl@tocsep 
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Diagrama a bloques del sistema\relax }}{19}{figure.caption.19}
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Logo de la Biblioteca de Nube de Puntos\relax }}{20}{figure.caption.20}
