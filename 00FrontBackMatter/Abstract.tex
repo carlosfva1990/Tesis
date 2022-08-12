@@ -1,11 +1,11 @@
 
 \chapter{Resumen}
-En este trabajo se presenta una propuesta para el desarrollo de una interfaz que permita la interacción de objetos reales con un mundo virtual, usando un clasificador objetos son representados por geometrías simples. Modificando el proceso de clasificación usando álgebra geométrica conforme (AGC) se plantea mejorar el proceso.
+En este trabajo se plantea medir el proceso usado para clasificar objetos fisicos que interactuan en el mundo virtual. Usando un clasificador objetos se genera la representacionde estos usando geometrías simples, luego de modificar el proceso usando álgebra geométrica conforme (AGC) se plantea mejorar el proceso.
 
 
-Con el sensor Kinect se obtienen las nubes de puntos de los objetos, se realiza la estimación de parámetros para los modelos de la esfera, el plano y el cilindro, usando el método RANSAC, y posteriormente seleccionar el modelo que mejor represente al objeto.
+Se utiliza el sensor Kinect para obtener un a representacion virtual de los objetos fisicos de los cuales se obtienen las nubes de puntos, usando el metodo RANSAC se realiza la estimación de parámetros para los modelos geometricos de la esfera, el plano y el cilindro, y seleccionar el modelo geometrico que coincida en mayor medida con la nuve de puntos del objeto.
 
-El sistema se compara contra el mismo pero en lugar de usar AGC utiliza métodos RANSAC de la biblioteca Point Cloud Library (PCL). Los resultados muestran valores similares entre los sistemas así como algunas ventajas individuales para cada sistema.
+El sistema se compara contra el mismo pero en lugar de usar la biblioteca Point Cloud Library (PCL) y los modelos euclidianos de las geometrias se utilizan los modelos geometricos representados con AGC. Los resultados muestran valores similares entre los sistemas así como algunas ventajas individuales para cada uno.
  
 
 \chapter{Abstract}

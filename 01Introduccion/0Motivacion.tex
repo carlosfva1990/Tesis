@@ -6,6 +6,20 @@ De manera similar a cuando la tecnología de las pantallas táctiles llegó a lo
 Estas nuevas interfaces son particularmente complicadas ya que se busca una interacción natural e intuitiva para el usuario, y que no solo se busca la interacción entre usuario y el mundo virtual, algunas empresas como Mircosoft con el proyecto de HoloLens apuntan a la intersección entre la realidad virtual y la realidad aumentada (realidad mixta), esto conlleva una interacción entre elementos reales, elementos virtuales y el usuario o usuarios.\\
 
 El problema con la interacción entre el usuario y el mundo virtual se ha tratado usando sistemas de captura de movimiento como los de la empresa VICON \cite{vicon}, que usando cámaras infrarrojas son capaces de obtener la pocición de un objeto que cuenta con reflectores de luz infrarroja. El problema es que estos sistemas son delicados y costosos, otra propuesta es presentada por Microsoft en los HoloLens y el Kinect que usan un sitema de mapeo del entorno usando luz infraroja y la tecnologia ToF (del ingles Time of figth) la cual calcula la distancia entre el dispocitivo y el entorno usando el tiempo que tarda la luz en rebotar en un objeto, como desventaja este metodo no disingue entre difeentes objetos. Esto deja un area de desarrollo para nuevas interfaces.\\
+
+luego de que dispocitivos cmo el wii, oculus rift entre otros agregaron un mando el sual se sostiene con la mano esta iterfaz se volvio mas comoda, dando pie a enfocarse en interaction de la persona con el ambiente virtual con las limitaciones de que el mundo virtual no interactua con el espacio real.
+
+Una forma de atacar este problema es realizar un escaneo del espacio real en el que uno se encuentra, como lo realizan los hololens y algunos dispocitivos de realidad mixta, la limitante es que el espacio virtual no se adapta al real y al acercarno a un obstaculo se rompe la ilucion del mundo virtual.
+
+
+para evitar esto se pueden generar modelos virtuales de los objetos del mundo real e incorporarlos al mundo virtual usando puntos caracteristicos, lo cual plantea el escaneo y almacenamieto de cada uno de los objetos y no permite incorporar objetos nuevos a la ecena sin antes aer sido escaneados.
+
+
+por otro lado se tiene la aproximacion de un objeto a su geometria basica mas caracteristica, esto le permite al desarrollador  crear objetos basicos que no sesentonen con el juego y permitan la interaccion con el mundo real.
+
+en esta tesis se intenta desglosar esta idea en desarrollos mas compctos que permitan ir creando esta interfaz.
+
+como primer punto y eje de esta tesis se plantea la forma en que se puede encontrar la geometria basica de un objeto irregular con ciertas caracteristicas, 
 %el cual puede ser desglosado en investigaciones más simples.\\
 
 
