@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.14)  11 JUL 2019 21:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.14)  3 JUL 2019 22:16
 entering extended mode
 **./main.tex
 (main.tex
@@ -1814,14 +1814,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 6--7
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 8--10
+Underfull \hbox (badness 10000) in paragraph at lines 8--9
 
  []
 
-) (01Introduccion/2marco_teorico.tex [1
+
+Underfull \hbox (badness 10000) in paragraph at lines 10--11
+
+ []
 
 
-]
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 14--15
+
+ []
+
+[1
+
+
+]) (01Introduccion/2marco_teorico.tex
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
@@ -1832,17 +1847,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 9--10
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--12
+Underfull \hbox (badness 10000) in paragraph at lines 11--13
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 16--18
+Underfull \hbox (badness 10000) in paragraph at lines 14--15
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 19--20
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
 
  []
 
@@ -1852,160 +1867,168 @@ Underfull \hbox (badness 10000) in paragraph at lines 21--22
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 29--30
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
 
  []
 
-[2]
-<01Introduccion/imagenes/wiiMote.JPG, id=519, 294.34969pt x 231.11343pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--36
+
+ []
+
+<01Introduccion/imagenes/wiiMote.JPG, id=518, 294.34969pt x 231.11343pt>
 File: 01Introduccion/imagenes/wiiMote.JPG Graphic file (type jpg)
 <use 01Introduccion/imagenes/wiiMote.JPG>
 Package pdftex.def Info: 01Introduccion/imagenes/wiiMote.JPG  used on input lin
-e 34.
+e 40.
 (pdftex.def)             Requested size: 177.42868pt x 139.31094pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 40--41
-
- []
-
-<01Introduccion/imagenes/PsMove.JPG, id=521, 211.54031pt x 380.92313pt>
-File: 01Introduccion/imagenes/PsMove.JPG Graphic file (type jpg)
-<use 01Introduccion/imagenes/PsMove.JPG>
-Package pdftex.def Info: 01Introduccion/imagenes/PsMove.JPG  used on input line
- 44.
-(pdftex.def)             Requested size: 88.71434pt x 159.7483pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 49--50
-
- []
-
 Package microtype Info: Character `013' is missing
 (microtype)             in font `OT1/pplj/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
-[3 <./01Introduccion/imagenes/wiiMote.JPG> <./01Introduccion/imagenes/PsMove.JP
-G>]
-<01Introduccion/imagenes/xbox360kinect.JPG, id=532, 582.175pt x 364.36125pt>
-File: 01Introduccion/imagenes/xbox360kinect.JPG Graphic file (type jpg)
-<use 01Introduccion/imagenes/xbox360kinect.JPG>
-Package pdftex.def Info: 01Introduccion/imagenes/xbox360kinect.JPG  used on inp
-ut line 53.
-(pdftex.def)             Requested size: 310.50357pt x 194.33366pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 58--59
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 46--47
 
  []
 
-<02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg, id=536, 4175.6p
+<01Introduccion/imagenes/PsMove.JPG, id=530, 211.54031pt x 380.92313pt>
+File: 01Introduccion/imagenes/PsMove.JPG Graphic file (type jpg)
+<use 01Introduccion/imagenes/PsMove.JPG>
+Package pdftex.def Info: 01Introduccion/imagenes/PsMove.JPG  used on input line
+ 50.
+(pdftex.def)             Requested size: 88.71434pt x 159.7483pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
+
+ []
+
+<01Introduccion/imagenes/xbox360kinect.JPG, id=535, 582.175pt x 364.36125pt>
+File: 01Introduccion/imagenes/xbox360kinect.JPG Graphic file (type jpg)
+<use 01Introduccion/imagenes/xbox360kinect.JPG>
+Package pdftex.def Info: 01Introduccion/imagenes/xbox360kinect.JPG  used on inp
+ut line 59.
+(pdftex.def)             Requested size: 310.50357pt x 194.33366pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--65
+
+ []
+
+[4 <./01Introduccion/imagenes/wiiMote.JPG> <./01Introduccion/imagenes/PsMove.JP
+G>]
+<02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg, id=546, 4175.6p
 t x 3131.7pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg Graphic fil
 e (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg>
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/20181017_182538
-[1].jpg  used on input line 84.
+[1].jpg  used on input line 90.
 (pdftex.def)             Requested size: 266.14978pt x 199.60143pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
+
+ []
+
+[5 <./01Introduccion/imagenes/xbox360kinect.JPG>]
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
 
  []
 
 
-Underfull \vbox (badness 3343) has occurred while \output is active []
-
- [4 <./01Introduccion/imagenes/xbox360kinect.JPG>]
-Underfull \hbox (badness 10000) in paragraph at lines 95--96
+Underfull \hbox (badness 10000) in paragraph at lines 102--103
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--98
+Underfull \hbox (badness 10000) in paragraph at lines 104--106
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--102
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
 
  []
 
-[5 <./02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 103--104
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 110--111
+[6 <./02Desarrollo/Preprocesamiento/imagenes/20181017_182538[1].jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
 
  []
 
-LaTeX Font Info:    Try loading font information for U+fplmbb on input line 119
+
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
+
+ []
+
+LaTeX Font Info:    Try loading font information for U+fplmbb on input line 127
 .
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ufplmbb.fd"
 File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
-)
-Underfull \vbox (badness 1253) has occurred while \output is active []
-
- [6]
-Underfull \hbox (badness 10000) in paragraph at lines 128--129
+) [7]
+Underfull \hbox (badness 10000) in paragraph at lines 136--137
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--131
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 132--133
+Underfull \hbox (badness 10000) in paragraph at lines 140--141
 
  []
 
-<01Introduccion/imagenes/RANSAC.jpeg, id=570, 569.4876pt x 677.6517pt>
+<01Introduccion/imagenes/RANSAC.jpeg, id=579, 569.4876pt x 677.6517pt>
 File: 01Introduccion/imagenes/RANSAC.jpeg Graphic file (type jpg)
 <use 01Introduccion/imagenes/RANSAC.jpeg>
 Package pdftex.def Info: 01Introduccion/imagenes/RANSAC.jpeg  used on input lin
-e 136.
+e 144.
 (pdftex.def)             Requested size: 443.57848pt x 527.8424pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
-[7] [8 <./01Introduccion/imagenes/RANSAC.jpeg>]
-Underfull \hbox (badness 10000) in paragraph at lines 172--173
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 174--176
+[8] [9 <./01Introduccion/imagenes/RANSAC.jpeg>]
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+Underfull \hbox (badness 10000) in paragraph at lines 182--184
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 184--185
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 190--191
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--194
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
+
+ []
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 198--199
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--196
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
 
  []
 
@@ -2015,48 +2038,53 @@ Underfull \hbox (badness 10000) in paragraph at lines 203--204
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 217--218
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--226
 
  []
 
 LaTeX Font Info:    Font shape `OT1/pplj/bx/n' in size <12> not available
-(Font)              Font shape `OT1/pplj/b/n' tried instead on input line 221.
+(Font)              Font shape `OT1/pplj/b/n' tried instead on input line 229.
 
-Underfull \hbox (badness 10000) in paragraph at lines 221--222
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 226--233
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 241--242
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 243--244
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 264--265
+Underfull \hbox (badness 10000) in paragraph at lines 229--230
 
  []
 
 [11]
-<01Introduccion/imagenes/ejemplo.jpg, id=637, 163.20975pt x 137.91525pt>
+Underfull \hbox (badness 10000) in paragraph at lines 231--232
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 234--241
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--273
+
+ []
+
+[12]
+<01Introduccion/imagenes/ejemplo.jpg, id=645, 163.20975pt x 137.91525pt>
 File: 01Introduccion/imagenes/ejemplo.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/ejemplo.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/ejemplo.jpg  used on input lin
-e 269.
+e 277.
 (pdftex.def)             Requested size: 177.42868pt x 149.9353pt.
 ) (01Introduccion/1antecedentes.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
@@ -2068,13 +2096,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
 
-<01Introduccion/imagenes/04AntecedentesA.jpg, id=641, 593.8185pt x 464.937pt>
+<01Introduccion/imagenes/04AntecedentesA.jpg, id=649, 593.8185pt x 464.937pt>
 File: 01Introduccion/imagenes/04AntecedentesA.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/04AntecedentesA.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/04AntecedentesA.jpg  used on i
 nput line 14.
 (pdftex.def)             Requested size: 199.60895pt x 156.2816pt.
-<01Introduccion/imagenes/04AntecedentesB.jpg, id=642, 530.58224pt x 464.937pt>
+<01Introduccion/imagenes/04AntecedentesB.jpg, id=650, 530.58224pt x 464.937pt>
 File: 01Introduccion/imagenes/04AntecedentesB.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/04AntecedentesB.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/04AntecedentesB.jpg  used on i
@@ -2085,22 +2113,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 32--33
 
  []
 
-[12 <./01Introduccion/imagenes/ejemplo.jpg>]
-<01Introduccion/imagenes/02AntecedentesA.jpg, id=656, 176.15813pt x 133.24782pt
+[13 <./01Introduccion/imagenes/ejemplo.jpg>]
+<01Introduccion/imagenes/02AntecedentesA.jpg, id=665, 176.15813pt x 133.24782pt
 >
 File: 01Introduccion/imagenes/02AntecedentesA.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/02AntecedentesA.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/02AntecedentesA.jpg  used on i
 nput line 39.
 (pdftex.def)             Requested size: 146.3817pt x 110.72374pt.
-<01Introduccion/imagenes/02AntecedentesB.jpg, id=657, 169.38281pt x 133.24782pt
+<01Introduccion/imagenes/02AntecedentesB.jpg, id=666, 169.38281pt x 133.24782pt
 >
 File: 01Introduccion/imagenes/02AntecedentesB.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/02AntecedentesB.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/02AntecedentesB.jpg  used on i
 nput line 43.
 (pdftex.def)             Requested size: 146.3817pt x 115.15814pt.
-<01Introduccion/imagenes/02AntecedentesC.jpg, id=658, 166.37157pt x 133.24782pt
+<01Introduccion/imagenes/02AntecedentesC.jpg, id=667, 166.37157pt x 133.24782pt
 >
 File: 01Introduccion/imagenes/02AntecedentesC.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/02AntecedentesC.jpg>
@@ -2117,11 +2145,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 61--62
 
  []
 
-[13 <./01Introduccion/imagenes/04AntecedentesA.jpg> <./01Introduccion/imagenes/
+[14 <./01Introduccion/imagenes/04AntecedentesA.jpg> <./01Introduccion/imagenes/
 04AntecedentesB.jpg> <./01Introduccion/imagenes/02AntecedentesA.jpg> <./01Intro
 duccion/imagenes/02AntecedentesB.jpg> <./01Introduccion/imagenes/02Antecedentes
 C.jpg>]
-<01Introduccion/imagenes/03Antecedentes.jpg, id=670, 1086.459pt x 469.15276pt>
+<01Introduccion/imagenes/03Antecedentes.jpg, id=678, 1086.459pt x 469.15276pt>
 File: 01Introduccion/imagenes/03Antecedentes.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/03Antecedentes.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/03Antecedentes.jpg  used on in
@@ -2132,13 +2160,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 73--74
 
  []
 
-<01Introduccion/imagenes/01AntecedentesA.jpg, id=673, 493.845pt x 488.57532pt>
+<01Introduccion/imagenes/01AntecedentesA.jpg, id=681, 493.845pt x 488.57532pt>
 File: 01Introduccion/imagenes/01AntecedentesA.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/01AntecedentesA.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/01AntecedentesA.jpg  used on i
 nput line 81.
 (pdftex.def)             Requested size: 199.60895pt x 197.4768pt.
-<01Introduccion/imagenes/01AntecedentesB.jpg, id=674, 477.28313pt x 477.28313pt
+<01Introduccion/imagenes/01AntecedentesB.jpg, id=682, 477.28313pt x 477.28313pt
 >
 File: 01Introduccion/imagenes/01AntecedentesB.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/01AntecedentesB.jpg>
@@ -2150,14 +2178,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 102--103
 
  []
 
-<01Introduccion/imagenes/05AntecedentesA.jpg, id=677, 260.77425pt x 253.54726pt
+<01Introduccion/imagenes/05AntecedentesA.jpg, id=685, 260.77425pt x 253.54726pt
 >
 File: 01Introduccion/imagenes/05AntecedentesA.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/05AntecedentesA.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/05AntecedentesA.jpg  used on i
 nput line 109.
 (pdftex.def)             Requested size: 199.60895pt x 194.08293pt.
-<01Introduccion/imagenes/05AntecedentesB.jpg, id=678, 261.3765pt x 252.945pt>
+<01Introduccion/imagenes/05AntecedentesB.jpg, id=686, 261.3765pt x 252.945pt>
 File: 01Introduccion/imagenes/05AntecedentesB.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/05AntecedentesB.jpg>
 Package pdftex.def Info: 01Introduccion/imagenes/05AntecedentesB.jpg  used on i
@@ -2166,7 +2194,7 @@ nput line 113.
 ) (01Introduccion/4planteamiento_del_problema.tex
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14 <./01Introduccion/imagenes/03Antecedentes.jpg>] [15 <./01Introduccion/imag
+ [15 <./01Introduccion/imagenes/03Antecedentes.jpg>] [16 <./01Introduccion/imag
 enes/01AntecedentesA.jpg> <./01Introduccion/imagenes/01AntecedentesB.jpg> <./01
 Introduccion/imagenes/05AntecedentesA.jpg> <./01Introduccion/imagenes/05Anteced
 entesB.jpg>]) (Introduccion/3justificacion.tex) (01Introduccion/5objetivo_gener
@@ -2188,8 +2216,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
 
-[16]
-<01Introduccion/imagenes/Diagrama_del_sistema.jpg, id=711, 932.73468pt x 517.93
+[17]
+<01Introduccion/imagenes/Diagrama_del_sistema.jpg, id=718, 932.73468pt x 517.93
 5pt>
 File: 01Introduccion/imagenes/Diagrama_del_sistema.jpg Graphic file (type jpg)
 <use 01Introduccion/imagenes/Diagrama_del_sistema.jpg>
@@ -2202,10 +2230,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--158
  []
 
 Chapter 2.
-[17 <./01Introduccion/imagenes/Diagrama_del_sistema.jpg>] [18
-
-
-]
+[18 <./01Introduccion/imagenes/Diagrama_del_sistema.jpg>]
 (02Desarrollo/Metodologia/00Metodoologia.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
@@ -2227,7 +2252,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
 
-<01Introduccion/imagenes/arquitectura_del_sistema.JPG, id=721, 495.0495pt x 380
+<01Introduccion/imagenes/arquitectura_del_sistema.JPG, id=724, 495.0495pt x 380
 .622pt>
 File: 01Introduccion/imagenes/arquitectura_del_sistema.JPG Graphic file (type j
 pg)
@@ -2243,13 +2268,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--1
 
 Underfull \vbox (badness 1215) has occurred while \output is active []
 
- [19 <./01Introduccion/imagenes/arquitectura_del_sistema.JPG>]
+ [19
+
+
+ <./01Introduccion/imagenes/arquitectura_del_sistema.JPG>]
 Underfull \hbox (badness 10000) in paragraph at lines 9--10
 
  []
 
 <02Desarrollo/Preprocesamiento/imagenes/pointcloudlibrary_vert_large_pos.png, i
-d=729, 1932.21875pt x 727.71875pt>
+d=732, 1932.21875pt x 727.71875pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/pointcloudlibrary_vert_large_pos.p
 ng Graphic file (type png)
 <use 02Desarrollo/Preprocesamiento/imagenes/pointcloudlibrary_vert_large_pos.pn
@@ -2274,21 +2302,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--26
 
 [20 <./02Desarrollo/Preprocesamiento/imagenes/pointcloudlibrary_vert_large_pos.
 png>]
-<02Desarrollo/Preprocesamiento/imagenes/color.jpg, id=744, 346.29375pt x 204.16
+<02Desarrollo/Preprocesamiento/imagenes/color.jpg, id=747, 346.29375pt x 204.16
 275pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/color.jpg Graphic file (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/color.jpg>
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/color.jpg  used
  on input line 32.
 (pdftex.def)             Requested size: 146.3817pt x 86.30228pt.
-<02Desarrollo/Preprocesamiento/imagenes/ir.jpg, id=745, 341.47575pt x 165.0165p
+<02Desarrollo/Preprocesamiento/imagenes/ir.jpg, id=748, 341.47575pt x 165.0165p
 t>
 File: 02Desarrollo/Preprocesamiento/imagenes/ir.jpg Graphic file (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/ir.jpg>
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/ir.jpg  used on
  input line 36.
 (pdftex.def)             Requested size: 146.3817pt x 70.73915pt.
-<02Desarrollo/Preprocesamiento/imagenes/profundidad.jpg, id=746, 342.68025pt x 
+<02Desarrollo/Preprocesamiento/imagenes/profundidad.jpg, id=749, 342.68025pt x 
 201.75375pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/profundidad.jpg Graphic file (type
  jpg)
@@ -2328,7 +2356,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 60--61
 
  []
 
-<02Desarrollo/Preprocesamiento/imagenes/downSampleA.png, id=764, 719.68875pt x 
+<02Desarrollo/Preprocesamiento/imagenes/downSampleA.png, id=767, 719.68875pt x 
 761.09344pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/downSampleA.png Graphic file (type
  png)
@@ -2336,7 +2364,7 @@ File: 02Desarrollo/Preprocesamiento/imagenes/downSampleA.png Graphic file (type
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/downSampleA.png
   used on input line 77.
 (pdftex.def)             Requested size: 199.60895pt x 211.0956pt.
-<02Desarrollo/Preprocesamiento/imagenes/downSampleB.png, id=765, 725.71124pt x 
+<02Desarrollo/Preprocesamiento/imagenes/downSampleB.png, id=768, 725.71124pt x 
 760.34062pt>
 File: 02Desarrollo/Preprocesamiento/imagenes/downSampleB.png Graphic file (type
  png)
@@ -2349,21 +2377,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 96--98
 
  []
 
-<02Desarrollo/Preprocesamiento/imagenes/andA.jpg, id=770, 588.1975pt x 642.4pt>
+<02Desarrollo/Preprocesamiento/imagenes/andA.jpg, id=773, 588.1975pt x 642.4pt>
 
 File: 02Desarrollo/Preprocesamiento/imagenes/andA.jpg Graphic file (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/andA.jpg>
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/andA.jpg  used 
 on input line 105.
 (pdftex.def)             Requested size: 146.3817pt x 159.86444pt.
-<02Desarrollo/Preprocesamiento/imagenes/andB.jpg, id=771, 585.18625pt x 642.4pt
+<02Desarrollo/Preprocesamiento/imagenes/andB.jpg, id=774, 585.18625pt x 642.4pt
 >
 File: 02Desarrollo/Preprocesamiento/imagenes/andB.jpg Graphic file (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/andB.jpg>
 Package pdftex.def Info: 02Desarrollo/Preprocesamiento/imagenes/andB.jpg  used 
 on input line 109.
 (pdftex.def)             Requested size: 146.3817pt x 160.68782pt.
-<02Desarrollo/Preprocesamiento/imagenes/andC.jpg, id=772, 591.20876pt x 642.4pt
+<02Desarrollo/Preprocesamiento/imagenes/andC.jpg, id=775, 591.20876pt x 642.4pt
 >
 File: 02Desarrollo/Preprocesamiento/imagenes/andC.jpg Graphic file (type jpg)
 <use 02Desarrollo/Preprocesamiento/imagenes/andC.jpg>
@@ -2413,7 +2441,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--5
 
  []
 
-<02Desarrollo/RANSAC/imagenes/hough.JPG, id=805, 389.65575pt x 323.40825pt>
+<02Desarrollo/RANSAC/imagenes/hough.JPG, id=808, 389.65575pt x 323.40825pt>
 File: 02Desarrollo/RANSAC/imagenes/hough.JPG Graphic file (type jpg)
 <use 02Desarrollo/RANSAC/imagenes/hough.JPG>
 Package pdftex.def Info: 02Desarrollo/RANSAC/imagenes/hough.JPG  used on input 
@@ -2480,7 +2508,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 204--205
  []
 
 [28] [29]
-<02Desarrollo/RANSAC/imagenes/MainGiagram2.jpeg, id=913, 615.65005pt x 745.2843
+<02Desarrollo/RANSAC/imagenes/MainGiagram2.jpeg, id=916, 615.65005pt x 745.2843
 8pt>
 File: 02Desarrollo/RANSAC/imagenes/MainGiagram2.jpeg Graphic file (type jpg)
 <use 02Desarrollo/RANSAC/imagenes/MainGiagram2.jpeg>
@@ -2502,7 +2530,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--5
 
  []
 
-<02Desarrollo/AGC/imagenes/distPtoS.JPG, id=925, 267.399pt x 159.59625pt>
+<02Desarrollo/AGC/imagenes/distPtoS.JPG, id=928, 267.399pt x 159.59625pt>
 File: 02Desarrollo/AGC/imagenes/distPtoS.JPG Graphic file (type jpg)
 <use 02Desarrollo/AGC/imagenes/distPtoS.JPG>
 Package pdftex.def Info: 02Desarrollo/AGC/imagenes/distPtoS.JPG  used on input 
@@ -2528,7 +2556,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 98--99
 
  []
 
-<02Desarrollo/AGC/imagenes/GAViewer.JPG, id=965, 773.289pt x 554.67226pt>
+<02Desarrollo/AGC/imagenes/GAViewer.JPG, id=968, 773.289pt x 554.67226pt>
 File: 02Desarrollo/AGC/imagenes/GAViewer.JPG Graphic file (type jpg)
 <use 02Desarrollo/AGC/imagenes/GAViewer.JPG>
 Package pdftex.def Info: 02Desarrollo/AGC/imagenes/GAViewer.JPG  used on input 
@@ -2566,13 +2594,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
 
-<03Resultados/imagenes/downsampleA.JPG, id=984, 576.9555pt x 618.51076pt>
+<03Resultados/imagenes/downsampleA.JPG, id=987, 576.9555pt x 618.51076pt>
 File: 03Resultados/imagenes/downsampleA.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/downsampleA.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/downsampleA.JPG  used on input l
 ine 36.
 (pdftex.def)             Requested size: 199.60895pt x 213.981pt.
-<03Resultados/imagenes/downsampleB.JPG, id=985, 577.55775pt x 618.51076pt>
+<03Resultados/imagenes/downsampleB.JPG, id=988, 577.55775pt x 618.51076pt>
 File: 03Resultados/imagenes/downsampleB.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/downsampleB.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/downsampleB.JPG  used on input l
@@ -2615,7 +2643,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 96--97
 
  []
 
-<03Resultados/imagenes/casoDeEstudio.JPG, id=1013, 168.63pt x 112.5003pt>
+<03Resultados/imagenes/casoDeEstudio.JPG, id=1016, 168.63pt x 112.5003pt>
 File: 03Resultados/imagenes/casoDeEstudio.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/casoDeEstudio.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/casoDeEstudio.JPG  used on input
@@ -2626,7 +2654,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 106--107
 
  []
 
-<03Resultados/imagenes/esfera.JPG, id=1015, 581.7735pt x 352.9185pt>
+<03Resultados/imagenes/esfera.JPG, id=1018, 581.7735pt x 352.9185pt>
 File: 03Resultados/imagenes/esfera.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/esfera.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/esfera.JPG  used on input line 1
@@ -2670,13 +2698,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 170--171
 
  []
 
-<03Resultados/imagenes/plano.JPG, id=1033, 585.98924pt x 352.31625pt>
+<03Resultados/imagenes/plano.JPG, id=1036, 585.98924pt x 352.31625pt>
 File: 03Resultados/imagenes/plano.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/plano.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/plano.JPG  used on input line 20
 3.
 (pdftex.def)             Requested size: 443.57848pt x 266.6987pt.
-<03Resultados/imagenes/cilindro.JPG, id=1036, 581.17125pt x 352.9185pt>
+<03Resultados/imagenes/cilindro.JPG, id=1039, 581.17125pt x 352.9185pt>
 File: 03Resultados/imagenes/cilindro.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/cilindro.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/cilindro.JPG  used on input line
@@ -2786,7 +2814,7 @@ LaTeX Font Info:    Font shape `U/msa/m/n' will be
 (Font)              scaled to size 5.21004pt on input line 211.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 5.21004pt on input line 211.
-<03Resultados/imagenes/tTotal.JPG, id=1100, 693.34032pt x 395.22656pt>
+<03Resultados/imagenes/tTotal.JPG, id=1103, 693.34032pt x 395.22656pt>
 File: 03Resultados/imagenes/tTotal.JPG Graphic file (type jpg)
 <use 03Resultados/imagenes/tTotal.JPG>
 Package pdftex.def Info: 03Resultados/imagenes/tTotal.JPG  used on input line 2
@@ -3270,9 +3298,9 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 212.
  ) 
 Here is how much of TeX's memory you used:
- 36364 strings out of 492973
- 679102 string characters out of 3135929
- 1038542 words of memory out of 3000000
+ 36368 strings out of 492973
+ 679345 string characters out of 3135929
+ 1038555 words of memory out of 3000000
  36406 multiletter control sequences out of 15000+200000
  629685 words of font info for 506 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -3292,9 +3320,9 @@ ij8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/P
 rogram Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplbi8a.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fon
 ts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (111 pages, 8892603 bytes).
+Output written on main.pdf (111 pages, 8896246 bytes).
 PDF statistics:
- 4297 PDF objects out of 5155 (max. 8388607)
- 2821 named destinations out of 2984 (max. 500000)
+ 4301 PDF objects out of 5155 (max. 8388607)
+ 2825 named destinations out of 2984 (max. 500000)
  91657 words of extra memory for PDF output out of 106986 (max. 10000000)
 
